@@ -230,12 +230,9 @@ Este endpoint requer autenticação via API Keys:
 - Os dados do cliente, cartão e produtos pelos dados reais da sua aplicação
 </Tip>
 
-<Tabs>
-<Tab title="PIX - Produto Digital">
+<CodeGroup>
 
-<RequestExample>
-
-```bash cURL
+```bash PIX - Produto Digital
 curl -X POST https://api.nextpagamentos.io/api/sales \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
   -H "X-Api-Private-Key: sua_chave_privada_aqui" \
@@ -268,15 +265,7 @@ curl -X POST https://api.nextpagamentos.io/api/sales \
   }'
 ```
 
-</RequestExample>
-
-</Tab>
-
-<Tab title="PIX - Produto Físico">
-
-<RequestExample>
-
-```bash cURL
+```bash PIX - Produto Físico
 curl -X POST https://api.nextpagamentos.io/api/sales \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
   -H "X-Api-Private-Key: sua_chave_privada_aqui" \
@@ -319,15 +308,7 @@ curl -X POST https://api.nextpagamentos.io/api/sales \
   }'
 ```
 
-</RequestExample>
-
-</Tab>
-
-<Tab title="Cartão de Crédito">
-
-<RequestExample>
-
-```bash cURL
+```bash Cartão de Crédito
 curl -X POST https://api.nextpagamentos.io/api/sales \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
   -H "X-Api-Private-Key: sua_chave_privada_aqui" \
@@ -371,10 +352,7 @@ curl -X POST https://api.nextpagamentos.io/api/sales \
   }'
 ```
 
-</RequestExample>
-
-</Tab>
-</Tabs>
+</CodeGroup>
 
 
 ## Resposta de Sucesso
