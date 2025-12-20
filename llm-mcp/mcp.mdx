@@ -11,21 +11,22 @@ Conecte a documentação e endpoints da API NextPay Gateway a ferramentas de IA 
 
 ## O que é MCP?
 
-O Model Context Protocol (MCP) é um protocolo aberto que cria conexões padronizadas entre aplicações de IA e serviços externos, como documentação. A Mintlify gera automaticamente um servidor MCP da sua documentação, preparando seu conteúdo para o ecossistema de IA onde qualquer cliente MCP (como Claude, Cursor, Goose e outros) pode se conectar à sua documentação.
+O Model Context Protocol (MCP) é um protocolo aberto que cria conexões padronizadas entre aplicações de IA e serviços externos. O NextPagamentos disponibiliza um servidor MCP público que permite que ferramentas de IA como Claude, Cursor, Goose e outras se conectem diretamente à documentação da API NextPay Gateway, facilitando a integração e o desenvolvimento.
 
 ## Como funciona
 
-Quando uma ferramenta de IA como Claude, Cursor ou ChatGPT tem o servidor MCP da sua documentação conectado, a ferramenta pode pesquisar sua documentação diretamente durante a geração de respostas, em vez de fazer uma busca genérica na web.
+O servidor MCP do NextPagamentos permite que ferramentas de IA acessem a documentação completa da API NextPay Gateway em tempo real. Quando você conecta o servidor MCP em sua ferramenta de IA preferida, ela pode:
 
-- O LLM pode pesquisar proativamente sua documentação enquanto gera uma resposta, não apenas quando explicitamente solicitado
-- O LLM determina quando usar a ferramenta de busca com base no contexto da conversa e na relevância da sua documentação
-- Cada chamada de ferramenta acontece durante o processo de geração, permitindo que o LLM incorpore informações em tempo real da sua documentação na resposta
+- Pesquisar proativamente a documentação da NextPay enquanto gera respostas, sem necessidade de solicitação explícita
+- Determinar automaticamente quando usar a documentação da NextPay com base no contexto da conversa
+- Incorporar informações atualizadas sobre endpoints, parâmetros, exemplos de código e boas práticas diretamente nas respostas
+- Fornecer respostas mais precisas sobre integração com PIX, cartões, transferências e outras funcionalidades da API
 
-**Exemplo**: Se um usuário faz uma pergunta sobre integração e o LLM determina que a documentação da NextPay é relevante, ele pode pesquisar a documentação e incluir essas informações na resposta sem que o usuário peça explicitamente.
+**Exemplo prático**: Se você perguntar "Como criar uma transação PIX?", a ferramenta de IA pode automaticamente buscar na documentação da NextPay informações sobre o endpoint `/api/sales`, parâmetros necessários, exemplos de código e até mesmo verificar os status possíveis da transação, tudo sem que você precise navegar manualmente pela documentação.
 
 ## URL do servidor MCP
 
-O servidor MCP da NextPay Gateway está disponível publicamente na seguinte URL:
+O servidor MCP do NextPagamentos está disponível publicamente na seguinte URL:
 
 <CodeGroup>
 ```text URL do servidor MCP
