@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "theme": "quill",
+  "theme": "palm",
   "colors": {
     "primary": "#0D9373",
     "light": "#07C983",
@@ -18,7 +18,7 @@
 
   "openapi": "/openapi.json",
   "api": {
-    "baseUrl": "https://api.nextpagamentos.io",
+    "baseUrl": "https://api.nextpagamentos.io/api",
     "auth": {
       "method": "key",
       "name": "X-Api-Public-Key",
@@ -28,50 +28,58 @@
       "mode": "show"
     }
   },
-  "navigation": [
-    {
-      "group": "Começando",
-      "icon": "rocket",
-      "pages": [
-        "introduction",
-        "authentication",
-        "mcp"
-      ]
-    },
-    {
-      "group": "Transações",
-      "icon": "credit-card",
-      "pages": [
-        "transactions/overview",
-        "transactions/response-objects",
-        "transactions/create",
-        "transactions/get",
-        "transactions/webhooks"
-      ]
-    },
-    {
-      "group": "Transferências",
-      "icon": "arrow-right-arrow-left",
-      "pages": [
-        "transfers/overview",
-        "transfers/response-objects",
-        "transfers/create"
-      ]
-    },
-    {
-      "group": "Saldo",
-      "icon": "wallet",
-      "pages": [
-        "balance/get"
-      ]
-    }
-  ],
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Guias",
+        "icon": "book-open",
+        "groups": [
+          {
+            "group": "Começando",
+            "icon": "rocket",
+            "pages": [
+              "introduction",
+              "authentication",
+              "mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Referências da API",
+        "icon": "square-terminal",
+        "groups": [
+          {
+            "group": "Transações",
+            "icon": "credit-card",
+            "pages": [
+              "transactions/overview",
+              "transactions/response-objects",
+              "transactions/create",
+              "transactions/get",
+              "transactions/webhooks"
+            ]
+          },
+          {
+            "group": "Transferências",
+            "icon": "arrow-right-arrow-left",
+            "pages": [
+              "transfers/overview",
+              "transfers/response-objects",
+              "transfers/create"
+            ]
+          },
+          {
+            "group": "Saldo",
+            "icon": "wallet",
+            "pages": [
+              "balance/get"
+            ]
+          }
+        ]
+      }
+    ]
+  },
   "topbarLinks": [
     {
       "name": "Suporte",
