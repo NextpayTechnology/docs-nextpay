@@ -17,7 +17,8 @@
   ],
   "security": [
     {
-      "ApiKeyAuth": []
+      "ApiKeyAuth": [],
+      "ApiSecretAuth": []
     }
   ],
   "components": {

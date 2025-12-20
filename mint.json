@@ -17,6 +17,16 @@
   "favicon": "/logo/favicon.png",
 
   "openapi": "/openapi.json",
+  "api": {
+    "auth": {
+      "method": "key",
+      "name": "X-Api-Public-Key",
+      "inputPrefix": "nxpay_"
+    },
+    "playground": {
+      "mode": "show"
+    }
+  },
   "navigation": [
     {
       "group": "Começando",
