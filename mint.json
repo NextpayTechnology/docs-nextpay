@@ -18,6 +18,7 @@
 
   "openapi": "/openapi.json",
   "api": {
+    "baseUrl": "https://api.nextpagamentos.io",
     "auth": {
       "method": "key",
       "name": "X-Api-Public-Key",
