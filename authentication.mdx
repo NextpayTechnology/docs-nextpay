@@ -1,6 +1,6 @@
 ---
-title: Autenticação
-description: Como autenticar suas requisições na API NextPay Gateway
+title: "Autenticação"
+description: "Como autenticar suas requisições na API NextPay Gateway"
 ---
 
 # Autenticação
@@ -17,27 +17,23 @@ As API Keys são compostas por dois componentes:
 ### Obtendo suas API Keys
 
 <Steps>
-<Step title="Acesse o Dashboard">
-  Acesse o [Dashboard NextPay Gateway](https://app.nextpagamentos.io) e faça login na sua conta.
-</Step>
-
-<Step title="Navegue até API Keys">
-  No menu lateral, navegue até **Integrações** → **Credenciais de API**.
-</Step>
-
-<Step title="Gere um novo par de chaves">
-  Clique em **Gerar Nova Chave** e confirme a ação.
-</Step>
-
-<Step title="Guarde suas chaves com segurança">
-  <Warning>
-  **Importante**: Guarde a chave privada com segurança, ela não será exibida novamente após a geração.
-  </Warning>
-  
-  <Tip>
-  Recomendamos salvar as chaves em um gerenciador de senhas ou variáveis de ambiente seguras.
-  </Tip>
-</Step>
+  <Step title="Acesse o Dashboard">
+    Acesse o [Dashboard NextPay Gateway](https://app.nextpagamentos.io) e faça login na sua conta.
+  </Step>
+  <Step title="Navegue até API Keys">
+    No menu lateral, navegue até **Integrações** → **Credenciais de API**.
+  </Step>
+  <Step title="Gere um novo par de chaves">
+    Clique em **Gerar Nova Chave** e confirme a ação.
+  </Step>
+  <Step title="Guarde suas chaves com segurança">
+    <Warning>
+      **Importante**: Guarde a chave privada com segurança, ela não será exibida novamente após a geração.
+    </Warning>
+    <Tip>
+      Recomendamos salvar as chaves em um gerenciador de senhas ou variáveis de ambiente seguras.
+    </Tip>
+  </Step>
 </Steps>
 
 ## Como Usar
@@ -55,11 +51,13 @@ Inclua as chaves de API nos cabeçalhos de todas as requisições:
 ### Exemplos de Requisição
 
 <CodeGroup>
+
 ```bash cURL
 curl -X GET https://api.nextpagamentos.io/api/transactions/123 \
   -H "X-Api-Public-Key: nxpay_63cd5cf695f26414f92eb9a500059460" \
   -H "X-Api-Private-Key: nxpay_399c0e9cd8bdae9b586bc814dc88b8df36b50b537630c9d17b5a96e1e45e7f99"
 ```
+
 
 ```javascript Node.js
 const response = await fetch('https://api.nextpagamentos.io/api/transactions/123', {
@@ -71,6 +69,7 @@ const response = await fetch('https://api.nextpagamentos.io/api/transactions/123
   }
 });
 ```
+
 
 ```python Python
 import requests
@@ -86,12 +85,13 @@ response = requests.get(
     headers=headers
 )
 ```
+
 </CodeGroup>
 
 ## Segurança
 
 <Warning>
-**Importante**: Nunca exponha suas chaves de API em código frontend ou repositórios públicos. Sempre use variáveis de ambiente ou serviços de gerenciamento de segredos.
+  **Importante**: Nunca exponha suas chaves de API em código frontend ou repositórios públicos. Sempre use variáveis de ambiente ou serviços de gerenciamento de segredos.
 </Warning>
 
 ### Boas Práticas
@@ -110,6 +110,7 @@ response = requests.get(
 Retornado quando as chaves de API são inválidas ou ausentes:
 
 <ResponseExample>
+
 ```json Error - 401 Unauthorized
 {
   "success": false,
@@ -119,6 +120,7 @@ Retornado quando as chaves de API são inválidas ou ausentes:
   }
 }
 ```
+
 </ResponseExample>
 
 ### 403 Forbidden
@@ -126,6 +128,7 @@ Retornado quando as chaves de API são inválidas ou ausentes:
 Retornado quando a operação não é permitida para sua conta:
 
 <ResponseExample>
+
 ```json Error - 403 Forbidden
 {
   "success": false,
@@ -135,5 +138,5 @@ Retornado quando a operação não é permitida para sua conta:
   }
 }
 ```
-</ResponseExample>
 
+</ResponseExample>
