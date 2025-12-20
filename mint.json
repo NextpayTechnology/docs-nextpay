@@ -12,6 +12,10 @@
     "light": "#E5FB3C",
     "dark": "#0D9373"
   },
+  "layout": "sidenav",
+  "sidebar": {
+    "items": "columns"
+  },
   "navigation": [
     {
       "group": "Introdução",
@@ -33,18 +37,6 @@
         "transfers/create",
         "balance/get"
       ]
-    }
-  ],
-  "anchors": [
-    {
-      "anchor": "Documentação",
-      "href": "https://docs.nextpagamentos.io",
-      "icon": "book-open-cover"
-    },
-    {
-      "anchor": "API",
-      "href": "https://api.nextpagamentos.io/api-docs",
-      "icon": "laptop-code"
     }
   ],
   "navbar": {
