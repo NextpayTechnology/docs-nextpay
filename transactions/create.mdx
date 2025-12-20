@@ -1,6 +1,7 @@
 ---
 title: Criar Transação
 description: Crie uma nova transação (venda) na plataforma usando a API pública do NextPay Gateway
+api: POST https://api.nextpagamentos.io/api/sales
 ---
 
 Crie uma nova transação (venda) na plataforma. Você pode processar pagamentos via PIX, Cartão de Crédito, Cartão de Débito ou Boleto.
@@ -221,7 +222,7 @@ Este endpoint requer autenticação via API Keys:
   Dados adicionais da venda (objeto JSON livre)
 </ParamField>
 
-## Exemplos de Requisição
+## Exemplo de Requisição
 
 <Tip>
 **Nota sobre os exemplos**: Os dados apresentados são apenas exemplos didáticos. Substitua:
@@ -230,7 +231,7 @@ Este endpoint requer autenticação via API Keys:
 - Os dados do cliente, cartão e produtos pelos dados reais da sua aplicação
 </Tip>
 
-<CodeGroup>
+<RequestExample>
 
 ```bash PIX - Produto Digital
 curl -X POST https://api.nextpagamentos.io/api/sales \
@@ -404,7 +405,7 @@ curl -v -X POST "https://api.nextpagamentos.io/api/sales" \
   }'
 ```
 
-</CodeGroup>
+</RequestExample>
 
 
 ## Resposta de Sucesso
@@ -467,9 +468,8 @@ curl -v -X POST "https://api.nextpagamentos.io/api/sales" \
   </Expandable>
 </ResponseField>
 
-### Exemplos de Resposta
-
 <ResponseExample>
+
 ```json Success - PIX Pendente (201 Created)
 {
   "message": "Venda criada com sucesso",
@@ -554,6 +554,7 @@ curl -v -X POST "https://api.nextpagamentos.io/api/sales" \
   }
 }
 ```
+
 </ResponseExample>
 
 ## Códigos de Erro
