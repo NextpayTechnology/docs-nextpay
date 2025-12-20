@@ -34,7 +34,8 @@
       "icon": "rocket",
       "pages": [
         "introduction",
-        "authentication"
+        "authentication",
+        "mcp"
       ]
     },
     {

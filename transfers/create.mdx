@@ -43,8 +43,8 @@ Este endpoint requer autenticação via API Keys:
 
 ```bash cURL
 curl -X POST https://api.nextpagamentos.io/api/public/cashout \
-  -H "X-Api-Public-Key: nxpay_f33e03c5c526bd65e0f1c8eddbc9d576" \
-  -H "X-Api-Private-Key: nxpay_dc3295ab805921e4b6ece2462f65267e9e9e087bfd66c94e9762008dd45df006" \
+  -H "X-Api-Public-Key: sua_chave_publica_aqui" \
+  -H "X-Api-Private-Key: sua_chave_privada_aqui" \
   -H "Content-Type: application/json" \
   -d '{
     "amount": 100.00,

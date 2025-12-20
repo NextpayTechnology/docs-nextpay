@@ -52,8 +52,8 @@ Inclua as chaves de API nos cabeçalhos de todas as requisições:
 
 ```bash cURL
 curl -X GET https://api.nextpagamentos.io/api/transactions/123 \
-  -H "X-Api-Public-Key: nxpay_63cd5cf695f26414f92eb9a500059460" \
-  -H "X-Api-Private-Key: nxpay_399c0e9cd8bdae9b586bc814dc88b8df36b50b537630c9d17b5a96e1e45e7f99"
+  -H "X-Api-Public-Key: sua_chave_publica_aqui" \
+  -H "X-Api-Private-Key: sua_chave_privada_aqui"
 ```
 
 
@@ -61,8 +61,8 @@ curl -X GET https://api.nextpagamentos.io/api/transactions/123 \
 const response = await fetch('https://api.nextpagamentos.io/api/transactions/123', {
   method: 'GET',
   headers: {
-    'X-Api-Public-Key': 'nxpay_63cd5cf695f26414f92eb9a500059460',
-    'X-Api-Private-Key': 'nxpay_399c0e9cd8bdae9b586bc814dc88b8df36b50b537630c9d17b5a96e1e45e7f99',
+    'X-Api-Public-Key': 'sua_chave_publica_aqui',
+    'X-Api-Private-Key': 'sua_chave_privada_aqui',
     'Content-Type': 'application/json'
   }
 });
@@ -73,8 +73,8 @@ const response = await fetch('https://api.nextpagamentos.io/api/transactions/123
 import requests
 
 headers = {
-    'X-Api-Public-Key': 'nxpay_63cd5cf695f26414f92eb9a500059460',
-    'X-Api-Private-Key': 'nxpay_399c0e9cd8bdae9b586bc814dc88b8df36b50b537630c9d17b5a96e1e45e7f99',
+    'X-Api-Public-Key': 'sua_chave_publica_aqui',
+    'X-Api-Private-Key': 'sua_chave_privada_aqui',
     'Content-Type': 'application/json'
 }
 
