@@ -131,7 +131,7 @@ Para receber notificações automáticas sobre mudanças de status dos saques, v
 ### Como Configurar
 
 1. Acesse o painel do NextPay Gateway
-2. Vá em **Menu lateral > Integrações > Adicionar Webhook**
+2. Vá em **Menu lateral \> Integrações \> Adicionar Webhook**
 3. Configure a URL do seu webhook (ex: `https://seusite.com/webhook/cashout`)
 4. Em "Tipos de Notificação", marque **"Notificar Saques"**
 5. Salve a configuração
@@ -174,20 +174,20 @@ O webhook é enviado quando o status do saque muda, após o processamento do pos
 
 ### Campos do Payload
 
-| Campo | Tipo | Descrição |
-|-------|------|-----------|
-| `id` | integer | ID interno do saque no NextPay Gateway |
-| `userId` | integer | ID do usuário que solicitou o saque |
-| `amount` | string | Valor do saque em reais (formato string, ex: "100.00") |
-| `pixKey` | string \| null | Chave PIX utilizada para o saque |
-| `pixKeyType` | string \| null | Tipo da chave PIX (CPF, CNPJ, EMAIL, PHONE, RANDOM) |
-| `status` | string | Status atual do saque (PENDING, PROCESSING, COMPLETED, CANCELLED, REJECTED) |
-| `externalId` | string \| null | ID externo do saque no provedor BaaS |
-| `createdAt` | string | Data de criação do saque (ISO 8601) |
-| `updatedAt` | string | Data da última atualização (ISO 8601) |
-| `processedAt` | string \| null | Data de processamento do saque (ISO 8601) |
-| `user` | object | Dados do usuário (id, name, email) |
-| `type` | string | Sempre "WITHDRAWAL" para identificar o tipo de notificação |
+| Campo         | Tipo           | Descrição                                                                   |
+| ------------- | -------------- | --------------------------------------------------------------------------- |
+| `id`          | integer        | ID interno do saque no NextPay Gateway                                      |
+| `userId`      | integer        | ID do usuário que solicitou o saque                                         |
+| `amount`      | string         | Valor do saque em reais (formato string, ex: "100.00")                      |
+| `pixKey`      | string \| null | Chave PIX utilizada para o saque                                            |
+| `pixKeyType`  | string \| null | Tipo da chave PIX (CPF, CNPJ, EMAIL, PHONE, RANDOM)                         |
+| `status`      | string         | Status atual do saque (PENDING, PROCESSING, COMPLETED, CANCELLED, REJECTED) |
+| `externalId`  | string \| null | ID externo do saque no provedor BaaS                                        |
+| `createdAt`   | string         | Data de criação do saque (ISO 8601)                                         |
+| `updatedAt`   | string         | Data da última atualização (ISO 8601)                                       |
+| `processedAt` | string \| null | Data de processamento do saque (ISO 8601)                                   |
+| `user`        | object         | Dados do usuário (id, name, email)                                          |
+| `type`        | string         | Sempre "WITHDRAWAL" para identificar o tipo de notificação                  |
 
 ### Segurança
 
@@ -244,6 +244,7 @@ app.post('/webhook/cashout', (req, res) => {
 app.listen(3000);
 ```
 
+
 ```python Python/Flask
 from flask import Flask, request, jsonify
 import os
@@ -273,6 +274,7 @@ def webhook_cashout():
 if __name__ == '__main__':
     app.run(port=3000)
 ```
+
 
 ```php PHP
 <?php
@@ -316,13 +318,13 @@ echo json_encode(['success' => true]);
 
 ### Diferenças entre Webhook Permanente e Postback
 
-| Característica | Webhook Permanente | Postback por Transação |
-|----------------|-------------------|------------------------|
-| Configuração | Painel do usuário | Campo `postbackUrl` na criação |
-| Assinatura HMAC | Não | Sim (`X-Signature` header) |
-| Escopo | Todas as transações/saques do usuário | Apenas transação/saque específica |
-| Campo `type` | Sim ("WITHDRAWAL") | Não |
-| Campo `user` | Sim (dados do usuário) | Não |
+| Característica  | Webhook Permanente                    | Postback por Transação            |
+| --------------- | ------------------------------------- | --------------------------------- |
+| Configuração    | Painel do usuário                     | Campo `postbackUrl` na criação    |
+| Assinatura HMAC | Não                                   | Sim (`X-Signature` header)        |
+| Escopo          | Todas as transações/saques do usuário | Apenas transação/saque específica |
+| Campo `type`    | Sim ("WITHDRAWAL")                    | Não                               |
+| Campo `user`    | Sim (dados do usuário)                | Não                               |
 
 ## Códigos de Erro
 
