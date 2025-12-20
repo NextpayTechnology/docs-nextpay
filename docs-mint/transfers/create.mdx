@@ -1,0 +1,198 @@
+---
+title: Criar Transferência
+description: Solicite um saque (cashout) do seu saldo disponível para uma chave PIX
+api: https://api.nextpagamentos.io/api/public/cashout
+method: POST
+---
+
+# Criar Transferência
+
+Solicita um saque (cashout) do seu saldo disponível para uma chave PIX.
+
+<Endpoint method="post" url="/api/public/cashout" />
+
+## Autenticação
+
+Este endpoint requer autenticação via API Keys:
+
+<ParamField header="X-Api-Public-Key" type="string" required>
+  Sua chave pública da API
+</ParamField>
+
+<ParamField header="X-Api-Private-Key" type="string" required>
+  Sua chave privada da API
+</ParamField>
+
+## Parâmetros do Body
+
+<ParamField body="amount" type="number" required>
+  Valor do cashout em reais (ex: 100.50 = R$ 100,50). **Mínimo: R$ 100,00**. Máximo: R$ 100.000,00
+</ParamField>
+
+<ParamField body="pixKey" type="string" required>
+  Chave PIX para recebimento (entre 8 e 77 caracteres)
+</ParamField>
+
+<ParamField body="pixKeyType" type="string">
+  Tipo da chave PIX. Valores possíveis: `CPF`, `CNPJ`, `EMAIL`, `PHONE`, `RANDOM`. Padrão: `CPF`
+</ParamField>
+
+<Warning>
+O valor mínimo para transferência é **R$ 100,00**. Valores abaixo deste mínimo retornarão erro `TRANSFER_NOT_ALLOWED`.
+</Warning>
+
+## Exemplo de Requisição
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.nextpagamentos.io/api/public/cashout \
+  -H "X-Api-Public-Key: nxpay_f33e03c5c526bd65e0f1c8eddbc9d576" \
+  -H "X-Api-Private-Key: nxpay_dc3295ab805921e4b6ece2462f65267e9e9e087bfd66c94e9762008dd45df006" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 100.00,
+    "pixKey": "11999999999",
+    "pixKeyType": "PHONE"
+  }'
+```
+</RequestExample>
+
+## Resposta de Sucesso
+
+<ResponseField name="id" type="integer">
+  ID do cashout
+</ResponseField>
+
+<ResponseField name="amount" type="string">
+  Valor em reais
+</ResponseField>
+
+<ResponseField name="pixKey" type="string">
+  Chave PIX
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  Status do cashout (PENDING, PROCESSING, etc.)
+</ResponseField>
+
+<ResponseField name="createdAt" type="string">
+  Data de criação (ISO 8601)
+</ResponseField>
+
+### Exemplo de Resposta
+
+<ResponseExample>
+```json Success - 201 Created
+{
+  "id": 12345,
+  "amount": "100.00",
+  "netAmount": "95.00",
+  "pixKey": "11999999999",
+  "pixKeyType": "PHONE",
+  "status": "PENDING",
+  "createdAt": "2024-01-15T10:30:00.000Z",
+  "fees": {
+    "fixed": "2.00",
+    "variable": "3.00",
+    "total": "5.00"
+  }
+}
+```
+</ResponseExample>
+
+<ResponseField name="netAmount" type="string">
+  Valor líquido após taxas em reais
+</ResponseField>
+
+<ResponseField name="pixKeyType" type="string">
+  Tipo da chave PIX utilizada
+</ResponseField>
+
+<ResponseField name="fees" type="object">
+  Detalhamento das taxas cobradas
+</ResponseField>
+
+<ResponseField name="fees.fixed" type="string">
+  Taxa fixa em reais
+</ResponseField>
+
+<ResponseField name="fees.variable" type="string">
+  Taxa variável em reais
+</ResponseField>
+
+<ResponseField name="fees.total" type="string">
+  Total de taxas em reais
+</ResponseField>
+
+## Códigos de Erro
+
+### 400 Bad Request
+
+Dados inválidos. Exemplo: valor deve ser um número válido maior que zero.
+
+<ResponseExample>
+```json Error - 400 Bad Request
+{
+  "message": "Dados inválidos",
+  "error": "O valor deve ser um número válido maior que zero"
+}
+```
+</ResponseExample>
+
+### 401 Unauthorized
+
+Não autorizado - API Key ou API Secret inválidos.
+
+<ResponseExample>
+```json Error - 401 Unauthorized
+{
+  "message": "Não autorizado",
+  "error": "Chaves de API inválidas ou ausentes"
+}
+```
+</ResponseExample>
+
+### 403 Forbidden
+
+Cashout via API desabilitado ou usuário sem permissão. Pode retornar:
+- `API_WITHDRAWAL_DISABLED_GLOBALLY` - Cashout via API está desabilitado globalmente
+- `TRANSFER_NOT_ALLOWED` - Transferência não permitida
+
+<ResponseExample>
+```json Error - 403 Forbidden
+{
+  "message": "Transferência não permitida",
+  "errorType": "TRANSFER_NOT_ALLOWED"
+}
+```
+</ResponseExample>
+
+### 422 Unprocessable Entity
+
+Saldo insuficiente ou regras de negócio. Pode retornar:
+- `INSUFFICIENT_BALANCE` - Saldo insuficiente para realizar o cashout
+- `MINIMUM_VALUE` - Valor abaixo do mínimo permitido (R$ 100,00)
+- `MAXIMUM_VALUE` - Valor acima do máximo permitido (R$ 100.000,00)
+
+<ResponseExample>
+```json Error - 422 Unprocessable Entity
+{
+  "message": "Saldo insuficiente para realizar o cashout",
+  "errorType": "INSUFFICIENT_BALANCE"
+}
+```
+</ResponseExample>
+
+### 500 Internal Server Error
+
+Erro interno do servidor.
+
+<ResponseExample>
+```json Error - 500 Internal Server Error
+{
+  "message": "Erro interno do servidor",
+  "error": "Falha ao processar cashout. Tente novamente mais tarde."
+}
+```
+</ResponseExample>
+

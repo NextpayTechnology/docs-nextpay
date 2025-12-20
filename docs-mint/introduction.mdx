@@ -1,0 +1,101 @@
+---
+title: Introdução
+description: Bem-vindo à documentação da API NextPay Gateway
+---
+
+# Introdução
+
+Bem-vindo à documentação da API pública do **NextPay Gateway**. Esta documentação fornece todas as informações necessárias para integrar sua aplicação com nossa plataforma de pagamentos.
+
+## O que é o NextPay Gateway?
+
+O NextPay Gateway é uma plataforma completa de processamento de pagamentos que oferece:
+
+- 💳 **Múltiplos métodos de pagamento**: PIX, Cartão de Crédito, Boleto
+- 🔐 **Segurança PCI DSS**: Compliance com os mais altos padrões de segurança
+- 🚀 **API RESTful**: Integração simples e rápida
+- 📊 **Gestão completa**: Transações, transferências e saldo
+
+## Base URL
+
+```
+https://api.nextpagamentos.io/api
+```
+
+## Autenticação
+
+Todas as requisições à API pública utilizam autenticação via **API Keys**:
+
+- **X-Api-Public-Key**: Chave pública da API
+- **X-Api-Private-Key**: Chave privada da API
+
+Você pode gerar suas chaves de API através do dashboard administrativo.
+
+## Formato de Resposta
+
+Todas as respostas da API seguem um formato padrão:
+
+### Sucesso
+
+```json
+{
+  "success": true,
+  "data": {
+    // Dados específicos do endpoint
+  },
+  "message": "Operação realizada com sucesso"
+}
+```
+
+### Erro
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Erro de validação",
+    "details": [
+      {
+        "field": "amount",
+        "message": "Valor inválido"
+      }
+    ]
+  }
+}
+```
+
+## Códigos de Status HTTP
+
+- `200 OK` - Requisição bem-sucedida
+- `201 Created` - Recurso criado com sucesso
+- `400 Bad Request` - Erro de validação
+- `401 Unauthorized` - Credenciais inválidas
+- `403 Forbidden` - Sem permissão para acessar o recurso
+- `404 Not Found` - Recurso não encontrado
+- `422 Unprocessable Entity` - Dados válidos, mas não processáveis
+- `429 Too Many Requests` - Limite de taxa excedido
+- `500 Internal Server Error` - Erro interno do servidor
+
+## Rate Limiting
+
+A API implementa limites de taxa para proteger contra abusos:
+
+- Rotas de transações: 300 requisições por minuto por usuário
+- Rotas de transferências: 10 requisições por minuto por usuário
+- Outras rotas: 60 requisições por minuto por usuário
+
+Os limites são informados nos cabeçalhos de resposta:
+
+```
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 59
+X-RateLimit-Reset: 1630000000
+```
+
+## Suporte
+
+Para suporte técnico ou dúvidas sobre a API:
+
+- Email: suporte@nextpagamentos.io
+

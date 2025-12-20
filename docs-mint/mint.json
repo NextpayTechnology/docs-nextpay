@@ -1,0 +1,89 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "theme": "mint",
+  "name": "NextPay Gateway API",
+  "logo": {
+    "dark": "/logo/dark.png",
+    "light": "/logo/light.png"
+  },
+  "favicon": "/logo/favicon.png",
+  "colors": {
+    "primary": "#0D9373",
+    "light": "#E5FB3C",
+    "dark": "#0D9373"
+  },
+  "navigation": {
+    "groups": [
+      {
+        "group": "Introdução",
+        "pages": [
+          "introduction",
+          "authentication"
+        ]
+      },
+      {
+        "group": "Transações",
+        "pages": [
+          "transactions/overview",
+          "transactions/response-objects",
+          "transactions/create",
+          "transactions/get",
+          "transactions/webhooks"
+        ]
+      },
+      {
+        "group": "Transferências",
+        "pages": [
+          "transfers/overview",
+          "transfers/response-objects",
+          "transfers/create"
+        ]
+      },
+      {
+        "group": "Saldo",
+        "pages": [
+          "balance/get"
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Documentação",
+          "href": "https://docs.nextpagamentos.io",
+          "icon": "book-open-cover"
+        },
+        {
+          "anchor": "API",
+          "href": "https://api.nextpagamentos.io/api-docs",
+          "icon": "laptop-code"
+        }
+      ]
+    }
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Suporte",
+        "href": "mailto:suporte@nextpagamentos.io"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://app.nextpagamentos.io"
+    }
+  },
+  "footer": {
+    "socials": {
+      "instagram": "https://instagram.com/nextpagamentos"
+    }
+  },
+  "api": {
+    "baseUrl": "https://api.nextpagamentos.io/api",
+    "auth": {
+      "method": "bearer"
+    }
+  }
+}
+
