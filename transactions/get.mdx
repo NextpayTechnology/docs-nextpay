@@ -1,6 +1,6 @@
 ---
-title: Buscar Transação
-description: Recupere os detalhes de uma transação específica usando o ID da venda
+title: "Buscar Transação"
+description: "Recupere os detalhes de uma transação específica usando o ID da venda"
 ---
 
 Recupera os detalhes de uma transação específica usando o ID da venda.
@@ -28,11 +28,13 @@ Este endpoint requer autenticação via API Keys:
 ## Exemplo de Requisição
 
 <RequestExample>
+
 ```bash cURL
 curl -X GET https://api.nextpagamentos.io/api/transactions/12345 \
-  -H "X-Api-Public-Key: nxpay_63cd5cf695f26414f92eb9a500059460" \
-  -H "X-Api-Private-Key: nxpay_399c0e9cd8bdae9b586bc814dc88b8df36b50b537630c9d17b5a96e1e45e7f99"
+  -H "X-Api-Public-Key: sua_chave_publica_aqui" \
+  -H "X-Api-Private-Key: sua_chave_privada_aqui"
 ```
+
 </RequestExample>
 
 ## Resposta de Sucesso
@@ -148,6 +150,7 @@ curl -X GET https://api.nextpagamentos.io/api/transactions/12345 \
 ### Exemplo de Resposta
 
 <ResponseExample>
+
 ```json Success - 200 OK
 {
   "id": 12345,
@@ -183,6 +186,7 @@ curl -X GET https://api.nextpagamentos.io/api/transactions/12345 \
   "shipping": {}
 }
 ```
+
 </ResponseExample>
 
 ## Códigos de Erro
@@ -192,12 +196,14 @@ curl -X GET https://api.nextpagamentos.io/api/transactions/12345 \
 ID inválido.
 
 <ResponseExample>
+
 ```json Error - 400 Bad Request
 {
   "message": "ID inválido",
   "error": "O ID da transação deve ser um número válido"
 }
 ```
+
 </ResponseExample>
 
 ### 401 Unauthorized
@@ -205,12 +211,14 @@ ID inválido.
 Não autorizado - Chaves de API inválidas ou ausentes.
 
 <ResponseExample>
+
 ```json Error - 401 Unauthorized
 {
   "message": "Não autorizado",
   "error": "Chaves de API inválidas ou ausentes"
 }
 ```
+
 </ResponseExample>
 
 ### 403 Forbidden
@@ -218,12 +226,14 @@ Não autorizado - Chaves de API inválidas ou ausentes.
 Acesso negado - Venda não pertence ao usuário autenticado.
 
 <ResponseExample>
+
 ```json Error - 403 Forbidden
 {
   "message": "Acesso negado",
   "error": "Esta transação não pertence à sua conta"
 }
 ```
+
 </ResponseExample>
 
 ### 404 Not Found
@@ -231,12 +241,14 @@ Acesso negado - Venda não pertence ao usuário autenticado.
 Venda não encontrada.
 
 <ResponseExample>
+
 ```json Error - 404 Not Found
 {
   "message": "Transação não encontrada",
   "error": "A transação com o ID informado não existe"
 }
 ```
+
 </ResponseExample>
 
 ### 500 Internal Server Error
@@ -244,11 +256,12 @@ Venda não encontrada.
 Erro interno do servidor.
 
 <ResponseExample>
+
 ```json Error - 500 Internal Server Error
 {
   "message": "Erro interno do servidor",
   "error": "Falha ao buscar transação. Tente novamente mais tarde."
 }
 ```
-</ResponseExample>
 
+</ResponseExample>
