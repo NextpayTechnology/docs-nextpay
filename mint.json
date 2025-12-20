@@ -54,18 +54,21 @@
       ]
     }
   ],
-  "navbar": {
-    "links": [
-      {
-        "label": "Suporte",
-        "href": "mailto:suporte@nextpagamentos.io"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.nextpagamentos.io"
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "api-reference"
     }
+  ],
+  "topbarLinks": [
+    {
+      "name": "Suporte",
+      "url": "mailto:suporte@nextpagamentos.io"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Dashboard",
+    "url": "https://app.nextpagamentos.io"
   },
   "footer": {
     "socials": {
