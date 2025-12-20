@@ -30,8 +30,7 @@
         "transactions/webhooks",
         "transfers/overview",
         "transfers/response-objects",
-        "transfers/create",
-        "balance/get"
+        "transfers/create"
       ]
     }
   ],
