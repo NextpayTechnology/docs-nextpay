@@ -3,7 +3,13 @@ title: "Model Context Protocol (MCP)"
 description: "Conecte a documentação da NextPay Gateway API a ferramentas de IA com nosso servidor MCP hospedado"
 ---
 
+# Model Context Protocol (MCP)
+
 Conecte a documentação e endpoints da API NextPay Gateway a ferramentas de IA através do nosso servidor MCP (Model Context Protocol) hospedado.
+
+<Note>
+  Esta página contém instruções completas para configurar o servidor MCP. **Não acesse a URL diretamente no navegador**. Siga as instruções abaixo para configurar corretamente em sua ferramenta de IA preferida.
+</Note>
 
 ## O que é MCP?
 
@@ -19,17 +25,23 @@ Quando uma ferramenta de IA como Claude, Cursor ou ChatGPT tem o servidor MCP da
 
 **Exemplo**: Se um usuário faz uma pergunta sobre integração e o LLM determina que a documentação da NextPay é relevante, ele pode pesquisar a documentação e incluir essas informações na resposta sem que o usuário peça explicitamente.
 
-## Acesse o servidor MCP
+## URL do servidor MCP
 
-O servidor MCP da NextPay Gateway está disponível publicamente em:
+O servidor MCP da NextPay Gateway está disponível publicamente na seguinte URL:
 
-```
+<CodeGroup>
+```text URL do servidor MCP
 https://docs.nextpagamentos.io/mcp
 ```
+</CodeGroup>
 
 <Info>
   Servidores MCP hospedados usam o caminho `/mcp` em suas URLs. Este caminho é reservado e não pode ser usado para outros elementos de navegação.
 </Info>
+
+<Warning>
+  **Importante**: Esta URL não deve ser acessada diretamente no navegador. Ela é usada apenas para configuração nas ferramentas de IA. Siga as instruções abaixo para configurar o servidor MCP corretamente.
+</Warning>
 
 ## Como usar o servidor MCP
 
