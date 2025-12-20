@@ -1,8 +1,8 @@
 ---
-title: Criar Transferência
-description: Solicite um saque (cashout) do seu saldo disponível para uma chave PIX
-api: https://api.nextpagamentos.io/api/public/cashout
-method: POST
+title: "Criar Transferência"
+description: "Solicite um saque (cashout) do seu saldo disponível para uma chave PIX"
+api: "https://api.nextpagamentos.io/api/public/cashout"
+method: "POST"
 ---
 
 # Criar Transferência
@@ -26,7 +26,7 @@ Este endpoint requer autenticação via API Keys:
 ## Parâmetros do Body
 
 <ParamField body="amount" type="number" required>
-  Valor do cashout em reais (ex: 100.50 = R$ 100,50). **Mínimo: R$ 100,00**. Máximo: R$ 100.000,00
+  Valor do cashout em reais (ex: 100.50 = R$ 100,50). **Mínimo: R$ 100,00\*\*. Máximo: R\$ 100.000,00
 </ParamField>
 
 <ParamField body="pixKey" type="string" required>
@@ -38,12 +38,13 @@ Este endpoint requer autenticação via API Keys:
 </ParamField>
 
 <Warning>
-O valor mínimo para transferência é **R$ 100,00**. Valores abaixo deste mínimo retornarão erro `TRANSFER_NOT_ALLOWED`.
+  O valor mínimo para transferência é **R\$ 100,00**. Valores abaixo deste mínimo retornarão erro `TRANSFER_NOT_ALLOWED`.
 </Warning>
 
 ## Exemplo de Requisição
 
 <RequestExample>
+
 ```bash cURL
 curl -X POST https://api.nextpagamentos.io/api/public/cashout \
   -H "X-Api-Public-Key: nxpay_f33e03c5c526bd65e0f1c8eddbc9d576" \
@@ -55,6 +56,7 @@ curl -X POST https://api.nextpagamentos.io/api/public/cashout \
     "pixKeyType": "PHONE"
   }'
 ```
+
 </RequestExample>
 
 ## Resposta de Sucesso
@@ -82,6 +84,7 @@ curl -X POST https://api.nextpagamentos.io/api/public/cashout \
 ### Exemplo de Resposta
 
 <ResponseExample>
+
 ```json Success - 201 Created
 {
   "id": 12345,
@@ -98,6 +101,7 @@ curl -X POST https://api.nextpagamentos.io/api/public/cashout \
   }
 }
 ```
+
 </ResponseExample>
 
 <ResponseField name="netAmount" type="string">
@@ -131,12 +135,14 @@ curl -X POST https://api.nextpagamentos.io/api/public/cashout \
 Dados inválidos. Exemplo: valor deve ser um número válido maior que zero.
 
 <ResponseExample>
+
 ```json Error - 400 Bad Request
 {
   "message": "Dados inválidos",
   "error": "O valor deve ser um número válido maior que zero"
 }
 ```
+
 </ResponseExample>
 
 ### 401 Unauthorized
@@ -144,43 +150,51 @@ Dados inválidos. Exemplo: valor deve ser um número válido maior que zero.
 Não autorizado - API Key ou API Secret inválidos.
 
 <ResponseExample>
+
 ```json Error - 401 Unauthorized
 {
   "message": "Não autorizado",
   "error": "Chaves de API inválidas ou ausentes"
 }
 ```
+
 </ResponseExample>
 
 ### 403 Forbidden
 
 Cashout via API desabilitado ou usuário sem permissão. Pode retornar:
+
 - `API_WITHDRAWAL_DISABLED_GLOBALLY` - Cashout via API está desabilitado globalmente
 - `TRANSFER_NOT_ALLOWED` - Transferência não permitida
 
 <ResponseExample>
+
 ```json Error - 403 Forbidden
 {
   "message": "Transferência não permitida",
   "errorType": "TRANSFER_NOT_ALLOWED"
 }
 ```
+
 </ResponseExample>
 
 ### 422 Unprocessable Entity
 
 Saldo insuficiente ou regras de negócio. Pode retornar:
+
 - `INSUFFICIENT_BALANCE` - Saldo insuficiente para realizar o cashout
-- `MINIMUM_VALUE` - Valor abaixo do mínimo permitido (R$ 100,00)
-- `MAXIMUM_VALUE` - Valor acima do máximo permitido (R$ 100.000,00)
+- `MINIMUM_VALUE` - Valor abaixo do mínimo permitido (R\$ 100,00)
+- `MAXIMUM_VALUE` - Valor acima do máximo permitido (R\$ 100.000,00)
 
 <ResponseExample>
+
 ```json Error - 422 Unprocessable Entity
 {
   "message": "Saldo insuficiente para realizar o cashout",
   "errorType": "INSUFFICIENT_BALANCE"
 }
 ```
+
 </ResponseExample>
 
 ### 500 Internal Server Error
@@ -188,11 +202,12 @@ Saldo insuficiente ou regras de negócio. Pode retornar:
 Erro interno do servidor.
 
 <ResponseExample>
+
 ```json Error - 500 Internal Server Error
 {
   "message": "Erro interno do servidor",
   "error": "Falha ao processar cashout. Tente novamente mais tarde."
 }
 ```
-</ResponseExample>
 
+</ResponseExample>
