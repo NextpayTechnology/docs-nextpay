@@ -352,6 +352,58 @@ curl -X POST https://api.nextpagamentos.io/api/sales \
   }'
 ```
 
+```bash PIX com UTM e Rastreamento
+curl -v -X POST "https://api.nextpagamentos.io/api/sales" \
+  -H "X-Api-Public-Key: sua_chave_publica_aqui" \
+  -H "X-Api-Private-Key: sua_chave_privada_aqui" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 5000,
+    "paymentMethod": "PIX",
+    "customer": {
+      "name": "João Silva Santos",
+      "email": "joao.santos@example.com",
+      "document": {
+        "type": "cpf",
+        "number": "12345678900"
+      },
+      "phone": "+5511943034718"
+    },
+    "items": [
+      {
+        "title": "Curso Avançado de Desenvolvimento",
+        "unitPrice": 5000,
+        "quantity": 1,
+        "tangible": true,
+        "planId": "curso-dev-avancado",
+        "planName": "Curso Dev Avançado"
+      }
+    ],
+    "shipping": {
+      "street": "Rua das Flores",
+      "streetNumber": "123",
+      "complement": "Apartamento 45",
+      "zipCode": "04567-010",
+      "neighborhood": "Jardim Paulista",
+      "city": "São Paulo",
+      "state": "SP",
+      "country": "br"
+    },
+    "metadata": {
+      "source": "website",
+      "campaign": "janeiro2025",
+      "utm_source": "facebook",
+      "utm_medium": "cpc",
+      "utm_campaign": "curso_desenvolvimento_2025",
+      "utm_content": "banner_principal",
+      "utm_term": "desenvolvimento+web",
+      "sck": "campaign123",
+      "src": "facebook_ads"
+    },
+    "postbackUrl": "https://seupostbackurl.com.br/webhook/transacao"
+  }'
+```
+
 </CodeGroup>
 
 
