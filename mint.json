@@ -34,8 +34,14 @@
       "icon": "rocket",
       "pages": [
         "introduction",
-        "authentication",
-        "mcp"
+        "authentication"
+      ]
+    },
+    {
+      "group": "MCP (Model Context Protocol)",
+      "icon": "brain-circuit",
+      "pages": [
+        "llm-mcp/mcp"
       ]
     },
     {
