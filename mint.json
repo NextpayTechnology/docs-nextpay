@@ -22,26 +22,16 @@
         ]
       },
       {
-        "group": "Transações",
+        "group": "API Reference",
         "pages": [
           "transactions/overview",
           "transactions/response-objects",
           "transactions/create",
           "transactions/get",
-          "transactions/webhooks"
-        ]
-      },
-      {
-        "group": "Transferências",
-        "pages": [
+          "transactions/webhooks",
           "transfers/overview",
           "transfers/response-objects",
-          "transfers/create"
-        ]
-      },
-      {
-        "group": "Saldo",
-        "pages": [
+          "transfers/create",
           "balance/get"
         ]
       }
