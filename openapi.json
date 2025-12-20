@@ -344,8 +344,8 @@
                 }
               },
               "examples": {
-                "pix": {
-                  "summary": "Pagamento via PIX",
+                "pix_digital": {
+                  "summary": "PIX - Produto Digital",
                   "value": {
                     "amount": 5000,
                     "paymentMethod": "PIX",
@@ -369,13 +369,49 @@
                     "postbackUrl": "https://seupostbackurl.com.br/webhook/transacao"
                   }
                 },
-                "credit_card": {
-                  "summary": "Pagamento via Cartão de Crédito",
+                "pix_physical": {
+                  "summary": "PIX - Produto Físico",
                   "value": {
-                    "amount": 10000,
+                    "amount": 15000,
+                    "paymentMethod": "PIX",
+                    "customer": {
+                      "name": "Maria Oliveira Costa",
+                      "email": "maria.oliveira@exemplo.com.br",
+                      "document": {
+                        "type": "cpf",
+                        "number": "98765432100"
+                      },
+                      "phone": "11988887777"
+                    },
+                    "items": [
+                      {
+                        "title": "Notebook Dell Inspiron 15",
+                        "unitPrice": 15000,
+                        "quantity": 1,
+                        "tangible": true,
+                        "productId": 12345
+                      }
+                    ],
+                    "shipping": {
+                      "street": "Rua das Flores",
+                      "streetNumber": "123",
+                      "complement": "Apto 45",
+                      "zipCode": "01310100",
+                      "neighborhood": "Bela Vista",
+                      "city": "São Paulo",
+                      "state": "SP",
+                      "country": "BR"
+                    },
+                    "postbackUrl": "https://seupostbackurl.com.br/webhook/transacao"
+                  }
+                },
+                "credit_card_installments": {
+                  "summary": "Cartão de Crédito - Parcelado",
+                  "value": {
+                    "amount": 120000,
                     "paymentMethod": "CREDIT_CARD",
                     "installments": {
-                      "number": 1
+                      "number": 12
                     },
                     "customer": {
                       "name": "Carlos Eduardo Pereira",
@@ -395,12 +431,139 @@
                     },
                     "items": [
                       {
-                        "title": "Produto Digital - Licença Anual",
-                        "unitPrice": 10000,
+                        "title": "Smart TV 55 polegadas",
+                        "unitPrice": 120000,
+                        "quantity": 1,
+                        "tangible": true,
+                        "productId": 67890
+                      }
+                    ],
+                    "shipping": {
+                      "street": "Avenida Paulista",
+                      "streetNumber": "1000",
+                      "complement": "Sala 200",
+                      "zipCode": "01310100",
+                      "neighborhood": "Bela Vista",
+                      "city": "São Paulo",
+                      "state": "SP",
+                      "country": "BR"
+                    },
+                    "postbackUrl": "https://seupostbackurl.com.br/webhook/transacao",
+                    "metadata": {
+                      "order_id": "ORD-2024-001",
+                      "campaign": "black_friday"
+                    }
+                  }
+                },
+                "credit_card_single": {
+                  "summary": "Cartão de Crédito - À Vista",
+                  "value": {
+                    "amount": 29900,
+                    "paymentMethod": "CREDIT_CARD",
+                    "installments": {
+                      "number": 1
+                    },
+                    "customer": {
+                      "name": "Ana Paula Rodrigues",
+                      "email": "ana.rodrigues@exemplo.com.br",
+                      "document": {
+                        "type": "cpf",
+                        "number": "55566677788"
+                      },
+                      "phone": "11966665555"
+                    },
+                    "card": {
+                      "number": "5555555555554444",
+                      "holderName": "ANA P RODRIGUES",
+                      "expirationMonth": "06",
+                      "expirationYear": "2026",
+                      "cvv": "456"
+                    },
+                    "items": [
+                      {
+                        "title": "Curso Online - Marketing Digital",
+                        "unitPrice": 29900,
                         "quantity": 1,
                         "tangible": false
                       }
-                    ]
+                    ],
+                    "postbackUrl": "https://seupostbackurl.com.br/webhook/transacao"
+                  }
+                },
+                "debit_card": {
+                  "summary": "Cartão de Débito",
+                  "value": {
+                    "amount": 8500,
+                    "paymentMethod": "DEBIT_CARD",
+                    "customer": {
+                      "name": "Pedro Henrique Santos",
+                      "email": "pedro.santos@exemplo.com.br",
+                      "document": {
+                        "type": "cpf",
+                        "number": "33344455566"
+                      },
+                      "phone": "11955554444"
+                    },
+                    "card": {
+                      "number": "4111111111111111",
+                      "holderName": "PEDRO H SANTOS",
+                      "expirationMonth": "03",
+                      "expirationYear": "2027",
+                      "cvv": "789"
+                    },
+                    "items": [
+                      {
+                        "title": "Fone de Ouvido Bluetooth",
+                        "unitPrice": 8500,
+                        "quantity": 1,
+                        "tangible": true
+                      }
+                    ],
+                    "shipping": {
+                      "street": "Rua Augusta",
+                      "streetNumber": "500",
+                      "zipCode": "01305000",
+                      "neighborhood": "Consolação",
+                      "city": "São Paulo",
+                      "state": "SP",
+                      "country": "BR"
+                    }
+                  }
+                },
+                "boleto": {
+                  "summary": "Boleto Bancário",
+                  "value": {
+                    "amount": 45000,
+                    "paymentMethod": "BOLETO",
+                    "customer": {
+                      "name": "Roberto Silva Oliveira",
+                      "email": "roberto.oliveira@exemplo.com.br",
+                      "document": {
+                        "type": "cpf",
+                        "number": "77788899900"
+                      },
+                      "phone": "11944443333"
+                    },
+                    "items": [
+                      {
+                        "title": "Cadeira Gamer Profissional",
+                        "unitPrice": 45000,
+                        "quantity": 1,
+                        "tangible": true,
+                        "productId": 11111
+                      }
+                    ],
+                    "shipping": {
+                      "street": "Rua Oscar Freire",
+                      "streetNumber": "200",
+                      "complement": "Casa",
+                      "zipCode": "01426000",
+                      "neighborhood": "Jardins",
+                      "city": "São Paulo",
+                      "state": "SP",
+                      "country": "BR"
+                    },
+                    "postbackUrl": "https://seupostbackurl.com.br/webhook/transacao"
                   }
                 }
               }
