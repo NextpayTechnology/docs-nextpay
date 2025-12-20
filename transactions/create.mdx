@@ -221,17 +221,7 @@ Este endpoint requer autenticação via API Keys:
   Dados adicionais da venda (objeto JSON livre)
 </ParamField>
 
-## Exemplos de Requisição
-
-<Tip>
-  **Nota sobre os exemplos**: Os dados apresentados são apenas exemplos didáticos. Substitua:
-
-  - `sua_chave_publica_aqui` e `sua_chave_privada_aqui` pelas suas chaves de API reais
-  - `seupostbackurl.com.br` pela URL do seu servidor que receberá as notificações
-  - Os dados do cliente, cartão e produtos pelos dados reais da sua aplicação
-</Tip>
-
-<CodeGroup>
+<RequestExample>
 
 ```bash PIX - Produto Digital
 curl -X POST https://api.nextpagamentos.io/api/sales \
@@ -265,7 +255,6 @@ curl -X POST https://api.nextpagamentos.io/api/sales \
     }
   }'
 ```
-
 
 ```bash PIX - Produto Físico
 curl -X POST https://api.nextpagamentos.io/api/sales \
@@ -310,7 +299,6 @@ curl -X POST https://api.nextpagamentos.io/api/sales \
   }'
 ```
 
-
 ```bash Cartão de Crédito
 curl -X POST https://api.nextpagamentos.io/api/sales \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
@@ -354,7 +342,6 @@ curl -X POST https://api.nextpagamentos.io/api/sales \
     }
   }'
 ```
-
 
 ```bash PIX com UTM e Rastreamento
 curl -v -X POST "https://api.nextpagamentos.io/api/sales" \
@@ -408,7 +395,7 @@ curl -v -X POST "https://api.nextpagamentos.io/api/sales" \
   }'
 ```
 
-</CodeGroup>
+</RequestExample>
 
 ## Resposta de Sucesso
 
