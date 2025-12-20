@@ -23,23 +23,37 @@
   "openapi": "/openapi.json",
   "navigation": [
     {
-      "group": "Introdução",
+      "group": "Começando",
+      "icon": "rocket",
       "pages": [
         "introduction",
         "authentication"
       ]
     },
     {
-      "group": "API Reference",
+      "group": "Transações",
+      "icon": "credit-card",
       "pages": [
         "transactions/overview",
         "transactions/response-objects",
         "transactions/create",
         "transactions/get",
-        "transactions/webhooks",
+        "transactions/webhooks"
+      ]
+    },
+    {
+      "group": "Transferências",
+      "icon": "arrow-right-arrow-left",
+      "pages": [
         "transfers/overview",
         "transfers/response-objects",
-        "transfers/create",
+        "transfers/create"
+      ]
+    },
+    {
+      "group": "Saldo",
+      "icon": "wallet",
+      "pages": [
         "balance/get"
       ]
     }
