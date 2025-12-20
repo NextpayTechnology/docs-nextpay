@@ -18,6 +18,7 @@
 
   "openapi": "/openapi.json",
   "api": {
+    "baseUrl": "https://api.nextpagamentos.io",
     "auth": {
       "method": "key",
       "name": "X-Api-Public-Key",
@@ -83,12 +84,6 @@
   "footer": {
     "socials": {
       "instagram": "https://instagram.com/nextpagamentos"
-    }
-  },
-  "api": {
-    "baseUrl": "https://api.nextpagamentos.io/api",
-    "auth": {
-      "method": "bearer"
     }
   }
 }
