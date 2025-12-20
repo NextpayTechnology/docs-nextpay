@@ -12,10 +12,6 @@
     "light": "#E5FB3C",
     "dark": "#0D9373"
   },
-  "layout": "sidenav",
-  "sidebar": {
-    "items": "columns"
-  },
   "navigation": [
     {
       "group": "Introdução",
