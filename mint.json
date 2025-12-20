@@ -9,10 +9,6 @@
       "dark": "#0F1419"
     }
   },
-  "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
-  },
   "name": "NextPay Gateway API",
   "logo": {
     "dark": "/logo/dark.png",
