@@ -526,6 +526,34 @@ curl -v -X POST "https://api.nextpagamentos.io/api/sales" \
   }
 }
 ```
+
+```json Success - Cartão de Crédito Recusado (201 Created)
+{
+  "message": "Venda criada com sucesso",
+  "sale": {
+    "id": 2490,
+    "amount": "2000",
+    "status": "RECUSADO",
+    "paymentMethod": "CREDIT_CARD",
+    "customer": {
+      "name": "João Silva Santos",
+      "email": "joao.santos@example.com",
+      "document": "14793766633",
+      "phone": "119943034718"
+    },
+    "payment": {
+      "method": "CREDIT_CARD",
+      "installments": null,
+      "card": {
+        "lastDigits": "0002",
+        "brand": "VISA"
+      }
+    },
+    "shipping": "{\"street\":\"Rua das Flores\",\"streetNumber\":\"123\",\"complement\":\"Apartamento 45\",\"neighborhood\":\"Jardim Paulista\",\"city\":\"São Paulo\",\"state\":\"SP\",\"zipCode\":\"04567010\",\"country\":\"br\"}",
+    "createdAt": "2025-12-20T16:22:43.336Z"
+  }
+}
+```
 </ResponseExample>
 
 ## Códigos de Erro
