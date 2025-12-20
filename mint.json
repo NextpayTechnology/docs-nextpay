@@ -85,12 +85,6 @@
     "socials": {
       "instagram": "https://instagram.com/nextpagamentos"
     }
-  },
-  "api": {
-    "baseUrl": "https://api.nextpagamentos.io/api",
-    "auth": {
-      "method": "bearer"
-    }
   }
 }
 
