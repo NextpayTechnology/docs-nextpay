@@ -1,6 +1,6 @@
 ---
-title: Criar Transação
-description: Crie uma nova transação (venda) na plataforma usando a API pública do NextPay Gateway
+title: "Criar Transação"
+description: "Crie uma nova transação (venda) na plataforma usando a API pública do NextPay Gateway"
 ---
 
 Crie uma nova transação (venda) na plataforma. Você pode processar pagamentos via PIX, Cartão de Crédito, Cartão de Débito ou Boleto.
@@ -22,7 +22,7 @@ Este endpoint requer autenticação via API Keys:
 ## Parâmetros do Body
 
 <ParamField body="amount" type="integer" required>
-  Valor da transação em centavos (ex: 10000 = R$ 100,00)
+  Valor da transação em centavos (ex: 10000 = R\$ 100,00)
 </ParamField>
 
 <ParamField body="paymentMethod" type="string" required>
@@ -224,10 +224,11 @@ Este endpoint requer autenticação via API Keys:
 ## Exemplos de Requisição
 
 <Tip>
-**Nota sobre os exemplos**: Os dados apresentados são apenas exemplos didáticos. Substitua:
-- `sua_chave_publica_aqui` e `sua_chave_privada_aqui` pelas suas chaves de API reais
-- `seupostbackurl.com.br` pela URL do seu servidor que receberá as notificações
-- Os dados do cliente, cartão e produtos pelos dados reais da sua aplicação
+  **Nota sobre os exemplos**: Os dados apresentados são apenas exemplos didáticos. Substitua:
+
+  - `sua_chave_publica_aqui` e `sua_chave_privada_aqui` pelas suas chaves de API reais
+  - `seupostbackurl.com.br` pela URL do seu servidor que receberá as notificações
+  - Os dados do cliente, cartão e produtos pelos dados reais da sua aplicação
 </Tip>
 
 <CodeGroup>
@@ -264,6 +265,7 @@ curl -X POST https://api.nextpagamentos.io/api/sales \
     }
   }'
 ```
+
 
 ```bash PIX - Produto Físico
 curl -X POST https://api.nextpagamentos.io/api/sales \
@@ -308,6 +310,7 @@ curl -X POST https://api.nextpagamentos.io/api/sales \
   }'
 ```
 
+
 ```bash Cartão de Crédito
 curl -X POST https://api.nextpagamentos.io/api/sales \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
@@ -351,6 +354,7 @@ curl -X POST https://api.nextpagamentos.io/api/sales \
     }
   }'
 ```
+
 
 ```bash PIX com UTM e Rastreamento
 curl -v -X POST "https://api.nextpagamentos.io/api/sales" \
@@ -406,7 +410,6 @@ curl -v -X POST "https://api.nextpagamentos.io/api/sales" \
 
 </CodeGroup>
 
-
 ## Resposta de Sucesso
 
 <ResponseField name="message" type="string">
@@ -415,48 +418,40 @@ curl -v -X POST "https://api.nextpagamentos.io/api/sales" \
 
 <ResponseField name="sale" type="object">
   Dados da venda criada
-  
+
   <Expandable title="Propriedades da venda">
     <ResponseField name="sale.id" type="integer">
       ID da venda
     </ResponseField>
-    
     <ResponseField name="sale.status" type="string">
       Status da venda. Valores possíveis: `PENDENTE`, `EM_PROCESSAMENTO`, `PAGO`, `CANCELADO`, `RECUSADO`, `ESTORNADO`, `FALHA`, `CHARGEBACK`, `MED`
     </ResponseField>
-    
     <ResponseField name="sale.amount" type="integer">
       Valor em centavos
     </ResponseField>
-    
     <ResponseField name="sale.pixKey" type="string">
       Chave PIX gerada (apenas para PIX)
     </ResponseField>
-    
     <ResponseField name="sale.qrCode" type="string">
       QR Code para pagamento em base64 (apenas para PIX/Boleto)
     </ResponseField>
-    
     <ResponseField name="sale.payment" type="object">
       Informações do pagamento
-      
+
       <Expandable title="Propriedades do pagamento">
         <ResponseField name="sale.payment.method" type="string">
           Método de pagamento utilizado
         </ResponseField>
-        
         <ResponseField name="sale.payment.pix" type="object">
           Dados do PIX (apenas para pagamentos PIX)
-          
+
           <Expandable title="Propriedades do PIX">
             <ResponseField name="sale.payment.pix.key" type="string">
               Chave PIX completa
             </ResponseField>
-            
             <ResponseField name="sale.payment.pix.qrCodeBase64" type="string">
               QR Code em formato base64 para exibição
             </ResponseField>
-            
             <ResponseField name="sale.payment.pix.expiresAt" type="string | null">
               Data de expiração do PIX (ISO 8601). `null` se não expira.
             </ResponseField>
@@ -470,6 +465,7 @@ curl -v -X POST "https://api.nextpagamentos.io/api/sales" \
 ### Exemplo de Resposta
 
 <ResponseExample>
+
 ```json Success - 201 Created
 {
   "message": "Venda criada com sucesso",
@@ -498,6 +494,7 @@ curl -v -X POST "https://api.nextpagamentos.io/api/sales" \
   }
 }
 ```
+
 </ResponseExample>
 
 ## Códigos de Erro
@@ -540,11 +537,10 @@ curl -v -X POST "https://api.nextpagamentos.io/api/sales" \
 
 ### Status HTTP
 
-| Código | Descrição |
-|--------|-----------|
-| `201` | Venda criada com sucesso |
-| `400` | Dados inválidos ou campos obrigatórios faltando |
-| `401` | Não autorizado - Chaves de API inválidas ou ausentes |
-| `422` | Erro de validação (ex: valor mínimo não atingido) |
-| `500` | Erro interno do servidor |
-
+| Código | Descrição                                            |
+| ------ | ---------------------------------------------------- |
+| `201`  | Venda criada com sucesso                             |
+| `400`  | Dados inválidos ou campos obrigatórios faltando      |
+| `401`  | Não autorizado - Chaves de API inválidas ou ausentes |
+| `422`  | Erro de validação (ex: valor mínimo não atingido)    |
+| `500`  | Erro interno do servidor                             |
