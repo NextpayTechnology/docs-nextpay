@@ -12,6 +12,7 @@
     "light": "#E5FB3C",
     "dark": "#0D9373"
   },
+  "openapi": "/openapi.json",
   "navigation": [
     {
       "group": "Introdução",
@@ -30,7 +31,8 @@
         "transactions/webhooks",
         "transfers/overview",
         "transfers/response-objects",
-        "transfers/create"
+        "transfers/create",
+        "balance/get"
       ]
     }
   ],
