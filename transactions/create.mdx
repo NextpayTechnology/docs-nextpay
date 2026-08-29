@@ -1,7 +1,7 @@
 ---
 title: "Criar Transação"
 description: "Crie uma nova transação (venda) na plataforma usando a API pública do NextPay Gateway"
-api: "POST https://api.nextpagamentos.io/api/sales"
+api: "POST https://api.nextpagamentos.com.br/api/sales"
 playground: true
 ---
 
@@ -28,7 +28,7 @@ Este endpoint requer autenticação via API Keys:
 </ParamField>
 
 <ParamField body="paymentMethod" type="string" required>
-  Método de pagamento. Valores possíveis: `CREDIT_CARD`, `DEBIT_CARD`, `BOLETO`, `PIX`, `TRANSFER`
+  Método de pagamento. Valores possíveis: `CREDIT_CARD`, `DEBIT_CARD`, `BOLETO`, `PIX`, `PIX_AUTOMATICO`, `TRANSFER`
 </ParamField>
 
 <ParamField body="customer" type="object" required>
@@ -58,6 +58,96 @@ Este endpoint requer autenticação via API Keys:
 <ParamField body="customer.phone" type="string">
   Telefone do cliente no formato 11999999999 (sem caracteres especiais)
 </ParamField>
+
+<ParamField body="pixAutomatico" type="object">
+  Configuração da recorrência (obrigatório para `PIX_AUTOMATICO` ao criar uma
+  **autorização nova**). Para cobrar um ciclo de uma autorização que já existe,
+  envie `metadata.idRec` em vez deste bloco.
+</ParamField>
+
+<ParamField body="pixAutomatico.contrato" type="string" required>
+  Identificador da autorização no seu sistema — é o que o cliente enxerga no app
+  do banco e o que você usa para reconciliar. **Máximo de 35 caracteres**
+  (limite do protocolo; acima disso a transação é recusada).
+</ParamField>
+
+<ParamField body="pixAutomatico.dataInicial" type="string" required>
+  Data estimada do primeiro pagamento, no formato `YYYY-MM-DD`.
+</ParamField>
+
+<ParamField body="pixAutomatico.periodicidade" type="string" default="MENSAL">
+  Intervalo entre as cobranças: `SEMANAL`, `MENSAL`, `TRIMESTRAL`, `SEMESTRAL`
+  ou `ANUAL`.
+</ParamField>
+
+<ParamField body="pixAutomatico.jornada" type="integer" default="3">
+  Como o cliente autoriza a recorrência:
+
+  - **1** — notificação push, sem QR. Para migrar assinantes que já existem.
+  - **2** — QR de recorrência futura: autoriza agora, primeira cobrança depois.
+  - **3** — QR composto: paga o primeiro ciclo e autoriza os próximos numa
+    única leitura. É o padrão, e o que o checkout usa.
+  - **4** — QR composto com cobrança com vencimento.
+</ParamField>
+
+<ParamField body="pixAutomatico.politicaRetentativa" type="string" default="PERMITE_3R_7D">
+  O que fazer quando um débito falha: `PERMITE_3R_7D` (até 3 tentativas em 7
+  dias) ou `NAO_PERMITE`.
+</ParamField>
+
+<ParamField body="pixAutomatico.dataFinal" type="string">
+  Encerra a recorrência nesta data (`YYYY-MM-DD`). Omita para autorização por
+  tempo indeterminado.
+</ParamField>
+
+<ParamField body="pixAutomatico.descricao" type="string">
+  Texto que ajuda o cliente a reconhecer a cobrança no app do banco. **Máximo de
+  35 caracteres** — valores maiores são truncados.
+</ParamField>
+
+<ParamField body="pixAutomatico.destinatario" type="object">
+  Dados bancários do cliente. Obrigatório **apenas na jornada 1**, que autoriza
+  por push e precisa saber para qual conta enviar a notificação. Campos:
+  `agencia`, `conta`, `cpf` e `ispbParticipante`.
+</ParamField>
+
+<Warning>
+  **A jornada muda o formato da resposta.**
+
+  Nas jornadas **3 e 4**, a autorização já cobra o primeiro ciclo — a resposta é
+  uma venda normal, com `sale` preenchido.
+
+  Nas jornadas **1 e 2**, nada é cobrado no momento da autorização. A resposta
+  vem com `sale: null` e apenas os dados da recorrência, porque criar uma venda
+  ali duplicaria o primeiro ciclo quando ele fosse cobrado de verdade. A cobrança
+  acontece a partir de `dataInicial`, e você recebe o webhook quando ela ocorrer.
+</Warning>
+
+<ResponseExample>
+
+```json Jornadas 1 e 2 — autorização sem cobrança (201 Created)
+{
+  "pixAutomatico": {
+    "idRec": "RR0908935620260829716b70f6b05",
+    "idSolicRec": null,
+    "jornada": 2,
+    "status": "CRIADA",
+    "qrCode": "00020101021226830014BR.GOV.BCB.PIX...",
+    "contrato": "assinatura-8842"
+  },
+  "sale": null,
+  "message": "Autorização criada. Nenhuma cobrança agora — o primeiro ciclo será cobrado a partir de dataInicial."
+}
+```
+
+</ResponseExample>
+
+<Info>
+  O `qrCode` é o código copia-e-cola que o cliente usa para autorizar. Nas
+  jornadas 3 e 4 ele é **composto**: a mesma leitura paga a primeira parcela e
+  autoriza as seguintes. Guarde o `idRec` — é com ele que você cobra os
+  próximos ciclos e cancela a recorrência.
+</Info>
 
 <ParamField body="card" type="object">
   Informações do cartão (obrigatório para `CREDIT_CARD` ou `DEBIT_CARD`)
@@ -316,8 +406,57 @@ Este endpoint requer autenticação via API Keys:
 
 <RequestExample>
 
+```bash PIX Automático - Assinatura
+curl -X POST https://api.nextpagamentos.com.br/api/sales   -H "X-Api-Public-Key: sua_chave_publica_aqui"   -H "X-Api-Private-Key: sua_chave_privada_aqui"   -H "Content-Type: application/json"   -d '{
+    "amount": 4990,
+    "paymentMethod": "PIX_AUTOMATICO",
+    "customer": {
+      "name": "Maria Oliveira",
+      "email": "maria.oliveira@exemplo.com.br",
+      "document": {
+        "type": "cpf",
+        "number": "12345678900"
+      },
+      "phone": "11999999999"
+    },
+    "items": [
+      {
+        "title": "Plano Premium Mensal",
+        "unitPrice": 4990,
+        "quantity": 1,
+        "tangible": false
+      }
+    ],
+    "pixAutomatico": {
+      "contrato": "assinatura-8842",
+      "dataInicial": "2026-09-01",
+      "periodicidade": "MENSAL",
+      "jornada": 3
+    },
+    "postbackUrl": "https://seupostbackurl.com.br/webhook/transacao"
+  }'
+```
+
+```bash PIX Automático - Cobrar ciclo de mandato existente
+curl -X POST https://api.nextpagamentos.com.br/api/sales   -H "X-Api-Public-Key: sua_chave_publica_aqui"   -H "X-Api-Private-Key: sua_chave_privada_aqui"   -H "Content-Type: application/json"   -d '{
+    "amount": 4990,
+    "paymentMethod": "PIX_AUTOMATICO",
+    "customer": {
+      "name": "Maria Oliveira",
+      "email": "maria.oliveira@exemplo.com.br",
+      "document": { "type": "cpf", "number": "12345678900" }
+    },
+    "items": [
+      { "title": "Plano Premium Mensal", "unitPrice": 4990, "quantity": 1, "tangible": false }
+    ],
+    "metadata": {
+      "idRec": "RR0908935620260829716b70f6b05"
+    }
+  }'
+```
+
 ```bash PIX - Produto Digital
-curl -X POST https://api.nextpagamentos.io/api/sales \
+curl -X POST https://api.nextpagamentos.com.br/api/sales \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
   -H "X-Api-Private-Key: sua_chave_privada_aqui" \
   -H "Content-Type: application/json" \
@@ -350,7 +489,7 @@ curl -X POST https://api.nextpagamentos.io/api/sales \
 ```
 
 ```bash PIX - Produto Físico
-curl -X POST https://api.nextpagamentos.io/api/sales \
+curl -X POST https://api.nextpagamentos.com.br/api/sales \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
   -H "X-Api-Private-Key: sua_chave_privada_aqui" \
   -H "Content-Type: application/json" \
@@ -393,7 +532,7 @@ curl -X POST https://api.nextpagamentos.io/api/sales \
 ```
 
 ```bash Cartão de Crédito
-curl -X POST https://api.nextpagamentos.io/api/sales \
+curl -X POST https://api.nextpagamentos.com.br/api/sales \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
   -H "X-Api-Private-Key: sua_chave_privada_aqui" \
   -H "Content-Type: application/json" \
@@ -437,7 +576,7 @@ curl -X POST https://api.nextpagamentos.io/api/sales \
 ```
 
 ```bash PIX com UTM e Rastreamento
-curl -v -X POST "https://api.nextpagamentos.io/api/sales" \
+curl -v -X POST "https://api.nextpagamentos.com.br/api/sales" \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
   -H "X-Api-Private-Key: sua_chave_privada_aqui" \
   -H "Content-Type: application/json" \

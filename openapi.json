@@ -6,12 +6,12 @@
     "version": "1.0.0",
     "contact": {
       "name": "NextPay Support",
-      "url": "https://nextpagamentos.io"
+      "url": "https://nextpagamentos.com.br"
     }
   },
   "servers": [
     {
-      "url": "https://api.nextpagamentos.io",
+      "url": "https://api.nextpagamentos.com.br",
       "description": "Servidor de Produção"
     }
   ],
@@ -39,7 +39,10 @@
     "schemas": {
       "Customer": {
         "type": "object",
-        "required": ["name", "email"],
+        "required": [
+          "name",
+          "email"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -55,7 +58,10 @@
             "properties": {
               "type": {
                 "type": "string",
-                "enum": ["cpf", "cnpj"],
+                "enum": [
+                  "cpf",
+                  "cnpj"
+                ],
                 "description": "Tipo do documento"
               },
               "number": {
@@ -72,7 +78,12 @@
       },
       "Item": {
         "type": "object",
-        "required": ["title", "unitPrice", "quantity", "tangible"],
+        "required": [
+          "title",
+          "unitPrice",
+          "quantity",
+          "tangible"
+        ],
         "properties": {
           "title": {
             "type": "string",
@@ -102,7 +113,13 @@
       },
       "Card": {
         "type": "object",
-        "required": ["number", "holderName", "expirationMonth", "expirationYear", "cvv"],
+        "required": [
+          "number",
+          "holderName",
+          "expirationMonth",
+          "expirationYear",
+          "cvv"
+        ],
         "properties": {
           "number": {
             "type": "string",
@@ -180,7 +197,17 @@
           },
           "status": {
             "type": "string",
-            "enum": ["PENDENTE", "PAGO", "CANCELADO", "RECUSADO", "ESTORNADO", "FALHA", "EM_PROCESSAMENTO", "CHARGEBACK", "MED"]
+            "enum": [
+              "PENDENTE",
+              "PAGO",
+              "CANCELADO",
+              "RECUSADO",
+              "ESTORNADO",
+              "FALHA",
+              "EM_PROCESSAMENTO",
+              "CHARGEBACK",
+              "MED"
+            ]
           },
           "amount": {
             "type": "number"
@@ -193,7 +220,14 @@
           },
           "paymentMethod": {
             "type": "string",
-            "enum": ["CREDIT_CARD", "DEBIT_CARD", "BOLETO", "PIX", "TRANSFER"]
+            "enum": [
+              "CREDIT_CARD",
+              "DEBIT_CARD",
+              "BOLETO",
+              "PIX",
+              "PIX_AUTOMATICO",
+              "TRANSFER"
+            ]
           },
           "date": {
             "type": "string",
@@ -230,7 +264,9 @@
         "summary": "Obter Saldo Disponível",
         "description": "Obtém o saldo disponível, bloqueado e total da sua conta",
         "operationId": "getBalance",
-        "tags": ["Balance"],
+        "tags": [
+          "Balance"
+        ],
         "security": [
           {
             "ApiKeyAuth": [],
@@ -285,7 +321,9 @@
         "summary": "Criar Transação",
         "description": "Crie uma nova transação (venda) na plataforma usando PIX, Cartão de Crédito, Cartão de Débito ou Boleto",
         "operationId": "createSale",
-        "tags": ["Transactions"],
+        "tags": [
+          "Transactions"
+        ],
         "security": [
           {
             "ApiKeyAuth": [],
@@ -298,7 +336,12 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["amount", "paymentMethod", "customer", "items"],
+                "required": [
+                  "amount",
+                  "paymentMethod",
+                  "customer",
+                  "items"
+                ],
                 "properties": {
                   "amount": {
                     "type": "integer",
@@ -306,7 +349,14 @@
                   },
                   "paymentMethod": {
                     "type": "string",
-                    "enum": ["CREDIT_CARD", "DEBIT_CARD", "BOLETO", "PIX", "TRANSFER"],
+                    "enum": [
+                      "CREDIT_CARD",
+                      "DEBIT_CARD",
+                      "BOLETO",
+                      "PIX",
+                      "PIX_AUTOMATICO",
+                      "TRANSFER"
+                    ],
                     "description": "Método de pagamento"
                   },
                   "customer": {
@@ -341,6 +391,86 @@
                   "metadata": {
                     "type": "object",
                     "description": "Dados adicionais da venda"
+                  },
+                  "pixAutomatico": {
+                    "type": "object",
+                    "description": "Configuração da recorrência. Obrigatório para PIX_AUTOMATICO ao criar uma autorização nova. Para cobrar um ciclo de um mandato existente, envie metadata.idRec em vez deste bloco.",
+                    "required": [
+                      "contrato",
+                      "dataInicial"
+                    ],
+                    "properties": {
+                      "contrato": {
+                        "type": "string",
+                        "maxLength": 35,
+                        "description": "Identificador da autorização no seu sistema. Máximo de 35 caracteres.",
+                        "example": "assinatura-8842"
+                      },
+                      "dataInicial": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Data estimada do primeiro pagamento (YYYY-MM-DD).",
+                        "example": "2026-09-01"
+                      },
+                      "periodicidade": {
+                        "type": "string",
+                        "enum": [
+                          "SEMANAL",
+                          "MENSAL",
+                          "TRIMESTRAL",
+                          "SEMESTRAL",
+                          "ANUAL"
+                        ],
+                        "default": "MENSAL"
+                      },
+                      "jornada": {
+                        "type": "integer",
+                        "enum": [
+                          1,
+                          2,
+                          3,
+                          4
+                        ],
+                        "default": 3,
+                        "description": "Como o cliente autoriza. 3 = QR composto que paga o primeiro ciclo e autoriza os próximos."
+                      },
+                      "politicaRetentativa": {
+                        "type": "string",
+                        "enum": [
+                          "PERMITE_3R_7D",
+                          "NAO_PERMITE"
+                        ],
+                        "default": "PERMITE_3R_7D"
+                      },
+                      "dataFinal": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Encerra a recorrência nesta data. Omita para prazo indeterminado."
+                      },
+                      "descricao": {
+                        "type": "string",
+                        "maxLength": 35,
+                        "description": "Texto que o cliente vê no app do banco. Máximo de 35 caracteres."
+                      },
+                      "destinatario": {
+                        "type": "object",
+                        "description": "Dados bancários do cliente. Obrigatório apenas na jornada 1.",
+                        "properties": {
+                          "agencia": {
+                            "type": "string"
+                          },
+                          "conta": {
+                            "type": "string"
+                          },
+                          "cpf": {
+                            "type": "string"
+                          },
+                          "ispbParticipante": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               },
@@ -792,7 +922,9 @@
         "summary": "Buscar Transação",
         "description": "Recupera os detalhes de uma transação específica usando o ID da venda",
         "operationId": "getTransaction",
-        "tags": ["Transactions"],
+        "tags": [
+          "Transactions"
+        ],
         "security": [
           {
             "ApiKeyAuth": [],
@@ -869,7 +1001,9 @@
         "summary": "Criar Transferência",
         "description": "Solicita um saque (cashout) do seu saldo disponível para uma chave PIX",
         "operationId": "createCashout",
-        "tags": ["Transfers"],
+        "tags": [
+          "Transfers"
+        ],
         "security": [
           {
             "ApiKeyAuth": [],
@@ -882,7 +1016,10 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["amount", "pixKey"],
+                "required": [
+                  "amount",
+                  "pixKey"
+                ],
                 "properties": {
                   "amount": {
                     "type": "number",
@@ -897,14 +1034,20 @@
                   },
                   "pixKeyType": {
                     "type": "string",
-                    "enum": ["CPF", "CNPJ", "EMAIL", "PHONE", "RANDOM"],
+                    "enum": [
+                      "CPF",
+                      "CNPJ",
+                      "EMAIL",
+                      "PHONE",
+                      "RANDOM"
+                    ],
                     "description": "Tipo da chave PIX",
                     "default": "CPF"
                   }
                 }
               },
               "example": {
-                "amount": 100.00,
+                "amount": 100.0,
                 "pixKey": "11999999999",
                 "pixKeyType": "PHONE"
               }

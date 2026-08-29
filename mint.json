@@ -18,7 +18,7 @@
 
   "openapi": "/openapi.json",
   "api": {
-    "baseUrl": "https://api.nextpagamentos.io",
+    "baseUrl": "https://api.nextpagamentos.com.br",
     "auth": {
       "method": "key",
       "name": "X-Api-Public-Key",
@@ -81,12 +81,12 @@
   "topbarLinks": [
     {
       "name": "Suporte",
-      "url": "mailto:suporte@nextpagamentos.io"
+      "url": "mailto:suporte@nextpagamentos.com.br"
     }
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://app.nextpagamentos.io"
+    "url": "https://app.nextpagamentos.com.br"
   },
   "footer": {
     "socials": {

@@ -5,17 +5,23 @@ description: Entenda como receber notificações de mudanças de status das tran
 
 O NextPay Gateway oferece duas formas de receber notificações sobre mudanças de status das transações:
 
-1. **Webhook Permanente**: Configurado no painel do usuário, recebe notificações de todas as transações
-2. **Postback por Transação**: URL específica configurada no campo `postbackUrl` ao criar uma venda
+1. **Webhook Permanente**: configurado no painel, com **eventos assinados**, retry automático e log de entregas
+2. **Postback por Transação**: URL específica no campo `postbackUrl` ao criar uma venda
+
+<Info>
+  Os dois convivem e são independentes. Se você configurar ambos, receberá as
+  duas notificações — com formatos e cabeçalhos diferentes.
+</Info>
 
 ## Diferenças entre Webhook e Postback
 
 <CardGroup cols={2}>
   <Card title="Webhook Permanente" icon="link">
-    - Configurado no painel do usuário
-    - Recebe notificações de todas as transações
-    - Inclui campos adicionais: `fee`, `transactionId`, `type`
-    - Sem assinatura HMAC
+    - Configurado no painel
+    - Você **escolhe quais eventos** quer receber
+    - Assinado com HMAC-SHA256 (`X-NextPay-Signature`)
+    - Retry automático e reenvio manual
+    - Cobre vendas, saques e carrinho abandonado
   </Card>
   <Card title="Postback por Transação" icon="webhook">
     - Configurado no campo `postbackUrl` da venda
@@ -27,11 +33,123 @@ O NextPay Gateway oferece duas formas de receber notificações sobre mudanças 
 
 ## Webhook Permanente
 
-Webhooks permanentes são configurados no painel do usuário e recebem notificações de todas as transações do usuário.
+Você cadastra uma URL no painel e **escolhe quais eventos** quer receber. Quando
+o fato acontece, a NextPay faz um `POST` nessa URL com o payload em JSON e
+cabeçalhos que permitem validar a origem.
+
+### Eventos disponíveis
+
+O nome do evento viaja no cabeçalho `X-NextPay-Event-Type` — é por essa string
+que seu servidor decide o que fazer.
+
+| Evento | Disparado quando |
+| --- | --- |
+| `sale.pending` | PIX ou boleto gerado, aguardando pagamento |
+| `sale.paid` | Pagamento confirmado — hora de liberar o produto |
+| `sale.refused` | A adquirente negou a cobrança |
+| `sale.canceled` | Cancelada antes de ser paga |
+| `sale.refunded` | Valor devolvido — revogar o acesso |
+| `sale.chargeback` | Compra contestada (inclui mediação de PIX) |
+| `withdrawal.pending` | Saque solicitado, em processamento |
+| `withdrawal.completed` | Saque concluído |
+| `withdrawal.rejected` | Saque recusado |
+| `withdrawal.canceled` | Saque cancelado |
+| `cart.abandoned` | Comprador preencheu os dados e não concluiu |
+| `cart.recovered` | O carrinho abandonado virou venda paga |
+
+<Note>
+  Os eventos de carrinho **não são ativados automaticamente**, nem mesmo em
+  webhooks antigos que recebiam tudo. Marque-os no painel se quiser recebê-los —
+  a ideia é não mandar tráfego que seu servidor não espera.
+</Note>
+
+### Cabeçalhos de toda entrega
+
+| Cabeçalho | Conteúdo |
+| --- | --- |
+| `X-NextPay-Signature` | `sha256=<hmac hex>` — a assinatura |
+| `X-NextPay-Timestamp` | Epoch em segundos do envio; entra no cálculo do HMAC |
+| `X-NextPay-Event-Id` | Id estável do evento — use para deduplicar |
+| `X-NextPay-Event-Type` | O evento, ex. `sale.paid` |
+| `X-NextPay-Redelivery` | Vem com `true` apenas em reenvio manual |
+
+### Validando a assinatura
+
+A assinatura é calculada sobre o timestamp mais o corpo:
+
+```
+base       = "<timestamp>.<corpo bruto da requisição>"
+assinatura = "sha256=" + HMAC_SHA256(segredo_do_webhook, base)
+```
+
+<Warning>
+  Calcule o HMAC sobre os **bytes brutos** que chegaram, nunca sobre o JSON
+  re-serializado. A ordem das chaves pode mudar na re-serialização, e aí a
+  assinatura nunca confere.
+</Warning>
+
+Regras que seu receptor deve seguir:
+
+1. Recalcular o HMAC sobre `timestamp.corpo`, usando os bytes brutos
+2. Comparar em **tempo constante** (`timingSafeEqual`, `hash_equals`)
+3. Rejeitar timestamp fora da janela de **5 minutos** — sem isso, uma requisição capturada valeria para sempre
+4. Deduplicar pelo `X-NextPay-Event-Id`
+5. Responder `2xx` rápido e processar depois
+
+<Info>
+  O segredo é **exclusivo de cada webhook** e exibido **uma única vez**, no
+  momento da criação. Ele não é recuperável por nenhuma leitura da API. Se
+  perder, crie outro webhook.
+</Info>
+
+Exemplos completos de validação, em Node e PHP, estão no painel em
+**Documentação → Validar assinatura**.
+
+### Retry e idempotência
+
+| Resposta do seu servidor | O que fazemos |
+| --- | --- |
+| `2xx` | Entregue, fim |
+| `4xx` | **Não reenviamos** — recusa deliberada não muda com insistência |
+| `5xx`, falha de rede ou timeout | Até **3 tentativas**, com espera crescente |
+| Sem resposta em **10 segundos** | Abortamos a tentativa e reagendamos |
+
+O `X-NextPay-Event-Id` é **estável por fato**: `sale.paid` da venda 42 tem
+sempre o mesmo id, em qualquer tentativa ou reenvio. "Venda pendente" e "venda
+paga" da mesma venda são fatos diferentes, com ids diferentes.
+
+<Warning>
+  Guarde os ids já processados. Sem deduplicação, um reenvio faz seu sistema
+  processar a mesma venda duas vezes — e entregar o produto em dobro.
+</Warning>
+
+### Log de entregas e reenvio
+
+Toda tentativa fica registrada e visível em **Integrações → Entregas**: evento,
+payload enviado, status HTTP devolvido, número de tentativas e erro.
+
+O botão **Reenviar** manda o **mesmo payload** e o **mesmo `eventId`** — você
+recebe o fato que aconteceu, não o estado atual da venda. A assinatura é
+recalculada com timestamp novo, porque a original já estaria fora da janela, e a
+entrega vem com `X-NextPay-Redelivery: true`.
 
 ### Configuração
 
-Configure seu webhook permanente no painel administrativo do NextPay Gateway. O webhook será chamado sempre que uma transação mudar de status.
+Configure no painel, em **Integrações → Webhooks**. A mesma gestão está
+disponível na API, autenticada pela sessão do painel:
+
+| Método e rota | Faz |
+| --- | --- |
+| `POST /api/webhook` | Cria. Body: `{ webhookUrl, events }`. **A resposta traz o `secret` — única vez** |
+| `GET /api/webhook` | Lista seus webhooks (nunca devolve o segredo) |
+| `PUT /api/webhook/:id` | Atualiza URL e/ou eventos |
+| `DELETE /api/webhook/:id` | Remove |
+| `GET /api/webhook/:id/deliveries` | Últimas entregas (`?limit=`, máx. 100) |
+| `POST /api/webhook/deliveries/:id/resend` | Reenvia uma entrega |
+
+<Note>
+  URLs apontando para IP privado ou loopback são recusadas em produção.
+</Note>
 
 ### Formato da Notificação
 
@@ -402,7 +520,7 @@ O postback por transação envia um payload com os seguintes campos:
 | `transactionId` | ✅ | ❌ |
 | `type` | ✅ (`"TRANSACTION"`) | ❌ |
 | `externalTransactionId` | ❌ | ✅ |
-| **Assinatura HMAC** | ❌ | ✅ (`X-Signature` header) |
+| **Assinatura HMAC** | ✅ (`X-NextPay-Signature`) | ✅ (`X-Signature`) |
 
 ## Quando as Notificações São Enviadas
 
@@ -417,6 +535,51 @@ As notificações são enviadas quando a transação muda para um **status final
 - `MED` - Mediação PIX iniciada
 
 **Nota:** Status intermediários como `PENDENTE` e `EM_PROCESSAMENTO` não geram notificações.
+
+## PIX Automático (assinaturas)
+
+Cobranças recorrentes usam **o mesmo webhook** de qualquer outra transação — não
+há endpoint nem formato separado. O que muda é o `paymentMethod`, que vem como
+`PIX_AUTOMATICO`.
+
+<Info>
+  **Cada ciclo é uma transação nova**, com seu próprio `id`. Se um cliente
+  assina em janeiro e você cobra mensalmente, em março você já recebeu três
+  notificações independentes — não uma atualização da mesma transação.
+</Info>
+
+### A autorização não gera notificação
+
+Vale entender a diferença entre autorizar e cobrar:
+
+| Momento | Gera venda? | Gera webhook? |
+| --- | --- | --- |
+| Cliente autoriza a recorrência (jornadas 1 e 2) | ❌ | ❌ |
+| Cliente autoriza **e paga** o primeiro ciclo (jornadas 3 e 4) | ✅ | ✅ |
+| Banco debita cada ciclo seguinte | ✅ | ✅ |
+
+Nas jornadas 1 e 2 a resposta da criação já avisa: vem com `sale: null`. Você só
+recebe a primeira notificação quando o débito acontecer, a partir da
+`dataInicial` que você definiu.
+
+<Warning>
+  Não trate a ausência de webhook logo após a autorização como falha. Nas
+  jornadas 1 e 2 isso é o comportamento correto — o cliente autorizou o débito,
+  mas nenhum dinheiro se moveu ainda.
+</Warning>
+
+### Correlacionando os ciclos
+
+Para ligar uma notificação à assinatura que a originou, use o `idRec` — o
+identificador da recorrência devolvido na criação. Ele acompanha as vendas de
+todos os ciclos daquele mandato, junto do `contrato` que você definiu.
+
+<Tip>
+  Guarde o `idRec` no seu banco assim que criar a autorização. É com ele que
+  você cobra ciclos avulsos, consulta o estado da recorrência e cancela o
+  mandato — e é o único identificador que a adquirente reconhece.
+</Tip>
+
 
 ## Exemplo de Implementação
 
@@ -458,20 +621,47 @@ app.post('/webhook/transacao', (req, res) => {
   res.status(200).json({ success: true });
 });
 
-// Webhook Permanente (sem validação HMAC)
-app.post('/webhook/permanente', (req, res) => {
-  const payload = req.body;
-  
-  // Processar notificação
-  console.log('Transação atualizada:', {
-    id: payload.id,
-    status: payload.status,
-    fee: payload.fee,
-    type: payload.type
+// Webhook Permanente — assinado, com deduplicação por evento
+// Use o corpo BRUTO: express.raw({ type: 'application/json' })
+const processados = new Set(); // em produção, use Redis ou banco
+
+app.post('/webhook/permanente',
+  express.raw({ type: 'application/json' }),
+  (req, res) => {
+    const corpoBruto = req.body.toString('utf8');
+    const timestamp = req.get('X-NextPay-Timestamp');
+    const recebida = req.get('X-NextPay-Signature') || '';
+    const eventId = req.get('X-NextPay-Event-Id');
+    const evento = req.get('X-NextPay-Event-Type');
+
+    // Recusa entregas antigas: sem isso, uma requisição capturada valeria sempre
+    if (!timestamp || Math.abs(Date.now() / 1000 - Number(timestamp)) > 300) {
+      return res.status(401).json({ error: 'Timestamp fora da janela' });
+    }
+
+    const esperada = 'sha256=' + crypto
+      .createHmac('sha256', process.env.NEXTPAY_WEBHOOK_SECRET)
+      .update(timestamp + '.' + corpoBruto)
+      .digest('hex');
+
+    const a = Buffer.from(esperada);
+    const b = Buffer.from(recebida);
+    if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
+      return res.status(401).json({ error: 'Assinatura inválida' });
+    }
+
+    // Responda 2xx antes de processar — acima de 10s a entrega é abortada
+    res.status(200).json({ success: true });
+
+    // Deduplicação: sem isso, um reenvio entrega o produto duas vezes
+    if (processados.has(eventId)) return;
+    processados.add(eventId);
+
+    const payload = JSON.parse(corpoBruto);
+    if (evento === 'sale.paid') {
+      console.log('Liberar produto da venda', payload.id);
+    }
   });
-  
-  res.status(200).json({ success: true });
-});
 
 app.listen(3000);
 ```
@@ -484,6 +674,7 @@ import hmac
 import hashlib
 import json
 import os
+import time
 
 app = Flask(__name__)
 
@@ -518,14 +709,39 @@ def webhook_transacao():
     
     return jsonify({'success': True}), 200
 
-# Webhook Permanente (sem validação HMAC)
+# Webhook Permanente — assinado, com deduplicação por evento
+processados = set()  # em produção, use Redis ou banco
+
 @app.route('/webhook/permanente', methods=['POST'])
 def webhook_permanente():
-    payload = request.json
-    
-    # Processar notificação
-    print(f"Transação atualizada: {payload['id']} - {payload['status']} - Fee: {payload['fee']}")
-    
+    corpo_bruto = request.get_data(as_text=True)  # bytes brutos, não request.json
+    timestamp = request.headers.get('X-NextPay-Timestamp', '')
+    recebida = request.headers.get('X-NextPay-Signature', '')
+    event_id = request.headers.get('X-NextPay-Event-Id')
+    evento = request.headers.get('X-NextPay-Event-Type')
+
+    # Recusa entregas antigas: sem isso, uma requisição capturada valeria sempre
+    if not timestamp or abs(time.time() - float(timestamp)) > 300:
+        return jsonify({'error': 'Timestamp fora da janela'}), 401
+
+    esperada = 'sha256=' + hmac.new(
+        os.environ['NEXTPAY_WEBHOOK_SECRET'].encode(),
+        f"{timestamp}.{corpo_bruto}".encode(),
+        hashlib.sha256
+    ).hexdigest()
+
+    if not hmac.compare_digest(esperada, recebida):
+        return jsonify({'error': 'Assinatura inválida'}), 401
+
+    # Deduplicação: sem isso, um reenvio entrega o produto duas vezes
+    if event_id in processados:
+        return jsonify({'success': True}), 200
+    processados.add(event_id)
+
+    payload = json.loads(corpo_bruto)
+    if evento == 'sale.paid':
+        print(f"Liberar produto da venda {payload['id']}")
+
     return jsonify({'success': True}), 200
 
 if __name__ == '__main__':
