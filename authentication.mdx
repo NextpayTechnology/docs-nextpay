@@ -28,6 +28,7 @@ As API Keys são compostas por dois componentes:
     <Warning>
       **Importante**: Guarde a chave privada com segurança, ela não será exibida novamente após a geração.
     </Warning>
+
     <Tip>
       Recomendamos salvar as chaves em um gerenciador de senhas ou variáveis de ambiente seguras.
     </Tip>
@@ -56,7 +57,6 @@ curl -X GET https://api.nextpagamentos.com.br/api/transactions/123 \
   -H "X-Api-Private-Key: sua_chave_privada_aqui"
 ```
 
-
 ```javascript Node.js
 const response = await fetch('https://api.nextpagamentos.com.br/api/transactions/123', {
   method: 'GET',
@@ -67,7 +67,6 @@ const response = await fetch('https://api.nextpagamentos.com.br/api/transactions
   }
 });
 ```
-
 
 ```python Python
 import requests
@@ -88,27 +87,20 @@ response = requests.get(
 
 ## Restrição por IP
 
-Além das chaves, você pode limitar **de quais endereços IP** sua API key funciona.
-É a defesa que continua valendo mesmo se a chave privada vazar: uma requisição
-com as chaves corretas, mas vinda de um IP fora da lista, é recusada.
+Além das chaves, você pode limitar **de quais endereços IP** sua API key funciona. É a defesa que continua valendo mesmo se a chave privada vazar: uma requisição com as chaves corretas, mas vinda de um IP fora da lista, é recusada.
 
 <Info>
-  A lista começa **vazia**, e lista vazia significa **sem restrição** — sua chave
-  funciona de qualquer origem. A proteção só passa a valer depois que você
-  cadastra o primeiro IP.
+  A lista começa **vazia**, e lista vazia significa **sem restrição** — sua chave funciona de qualquer origem. A proteção só passa a valer depois que você cadastra o primeiro IP.
 </Info>
 
 ### Como funciona
 
 <ParamField path="Correspondência" type="exata">
-  O IP de origem precisa ser **idêntico** a um da lista. Não há suporte a faixas
-  CIDR (`192.168.0.0/24`) nem curingas — cadastre cada endereço individualmente.
+  O IP de origem precisa ser **idêntico** a um da lista. Não há suporte a faixas CIDR (`192.168.0.0/24`) nem curingas — cadastre cada endereço individualmente.
 </ParamField>
 
 <ParamField path="Formatos aceitos" type="IPv4 e IPv6">
-  Ambos são aceitos. Endereços IPv4 mapeados em IPv6 (`::ffff:200.150.100.50`)
-  são normalizados para a forma IPv4, então cadastrar `200.150.100.50` cobre as
-  duas representações.
+  Ambos são aceitos. Endereços IPv4 mapeados em IPv6 (`::ffff:200.150.100.50`) são normalizados para a forma IPv4, então cadastrar `200.150.100.50` cobre as duas representações.
 </ParamField>
 
 <ParamField path="Limite" type="20 endereços">
@@ -116,45 +108,16 @@ com as chaves corretas, mas vinda de um IP fora da lista, é recusada.
 </ParamField>
 
 <Warning>
-  A restrição vale **apenas para requisições autenticadas por API key**. O acesso
-  ao painel pela sua sessão de login não passa por essa verificação — trancar a
-  API não tranca o dashboard.
+  A restrição vale **apenas para requisições autenticadas por API key**. O acesso ao painel pela sua sessão de login não passa por essa verificação — trancar a API não tranca o dashboard.
 </Warning>
 
 ### Configurando
 
-No painel, vá em **Integrações** → **Credenciais de API** e edite a lista de IPs
-autorizados. A mesma operação está disponível na rota abaixo, autenticada pela
-sessão do painel (não pela API key):
+No painel, vá em **Integrações** → **Credenciais de API** e edite a lista de IPs autorizados. A mesma operação está disponível na rota abaixo, autenticada pela sessão do painel (não pela API key):
 
-<CodeGroup>
+Para **remover** a restrição e voltar a aceitar qualquer origem, envie uma lista vazia:
 
-```bash cURL
-curl -X PUT https://api.nextpagamentos.com.br/api/apikey/allowed-ips   -H "Authorization: Bearer SEU_TOKEN_DE_SESSAO"   -H "Content-Type: application/json"   -d '{"allowedIps": ["200.150.100.50", "2804:14d:5c81:8000::1"]}'
-```
-
-</CodeGroup>
-
-<ResponseExample>
-
-```json 200 OK
-{
-  "message": "IPs autorizados atualizados com sucesso",
-  "allowedIps": ["200.150.100.50", "2804:14d:5c81:8000::1"]
-}
-```
-
-</ResponseExample>
-
-Para **remover** a restrição e voltar a aceitar qualquer origem, envie uma lista
-vazia:
-
-```json
-{ "allowedIps": [] }
-```
-
-Um endereço malformado faz a requisição inteira falhar, sem alterar nada — a
-resposta diz qual valor foi recusado:
+Um endereço malformado faz a requisição inteira falhar, sem alterar nada — a resposta diz qual valor foi recusado:
 
 <ResponseExample>
 
@@ -183,10 +146,7 @@ Requisições vindas de fora da lista recebem **403** com o código `IP_NOT_ALLO
 </ResponseExample>
 
 <Tip>
-  Se você usa servidores com IP dinâmico, ou um provedor que roteia a saída por
-  vários endereços, cadastre todos os IPs de saída possíveis — ou deixe a lista
-  vazia e proteja a chave por outros meios. Uma lista incompleta derruba
-  requisições legítimas em produção.
+  Se você usa servidores com IP dinâmico, ou um provedor que roteia a saída por vários endereços, cadastre todos os IPs de saída possíveis — ou deixe a lista vazia e proteja a chave por outros meios. Uma lista incompleta derruba requisições legítimas em produção.
 </Tip>
 
 ## Segurança

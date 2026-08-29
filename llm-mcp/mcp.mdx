@@ -29,9 +29,11 @@ O servidor MCP do NextPagamentos permite que ferramentas de IA acessem a documen
 O servidor MCP do NextPagamentos está disponível publicamente na seguinte URL:
 
 <CodeGroup>
+
 ```text URL do servidor MCP
 https://docs.nextpagamentos.com.br/mcp
 ```
+
 </CodeGroup>
 
 <Info>
@@ -54,7 +56,7 @@ Para usar o servidor MCP da NextPay Gateway em suas ferramentas de IA favoritas,
     2. Selecione **Add custom connector**
     3. Adicione o servidor MCP da NextPay:
        - **Name**: `NextPay Gateway`
-       - **URL**: `https://docs.nextpagamentos.com.br/mcp`
+       - **URL**: `https://docs.nextpagamentos.io/mcp`
     4. Selecione **Add**
 
     ### Usar no chat
@@ -67,14 +69,13 @@ Para usar o servidor MCP da NextPay Gateway em suas ferramentas de IA favoritas,
       Veja a [documentação do Model Context Protocol](https://modelcontextprotocol.io/docs/tutorials/use-remote-mcp-server#connecting-to-a-remote-mcp-server) para mais detalhes.
     </Tip>
   </Tab>
-
   <Tab title="Claude Code">
     ### Instalar via linha de comando
 
     Execute o seguinte comando para adicionar o servidor MCP da NextPay:
 
     ```bash
-    claude mcp add --transport http NextPayGateway https://docs.nextpagamentos.com.br/mcp
+    claude mcp add --transport http NextPayGateway https://docs.nextpagamentos.io/mcp
     ```
 
     ### Testar a conexão
@@ -87,11 +88,10 @@ Para usar o servidor MCP da NextPay Gateway em suas ferramentas de IA favoritas,
       Veja a [documentação do Claude Code](https://docs.anthropic.com/en/docs/claude-code/mcp#installing-mcp-servers) para mais detalhes.
     </Tip>
   </Tab>
-
   <Tab title="Cursor">
     ### Configuração manual
 
-    1. Use **Command + Shift + P** (Ctrl + Shift + P no Windows) para abrir a paleta de comandos
+    1. Use **Command \+ Shift \+ P** (Ctrl \+ Shift \+ P no Windows) para abrir a paleta de comandos
     2. Pesquise por "Open MCP settings"
     3. Selecione **Add custom MCP**. Isso abre o arquivo `mcp.json`
     4. Em `mcp.json`, adicione:
@@ -100,7 +100,7 @@ Para usar o servidor MCP da NextPay Gateway em suas ferramentas de IA favoritas,
     {
       "mcpServers": {
         "NextPayGateway": {
-          "url": "https://docs.nextpagamentos.com.br/mcp"
+          "url": "https://docs.nextpagamentos.io/mcp"
         }
       }
     }
@@ -114,7 +114,6 @@ Para usar o servidor MCP da NextPay Gateway em suas ferramentas de IA favoritas,
       Veja a [documentação do Cursor](https://docs.cursor.com/en/context/mcp#installing-mcp-servers) para mais detalhes.
     </Tip>
   </Tab>
-
   <Tab title="VS Code">
     ### Configuração manual
 
@@ -126,7 +125,7 @@ Para usar o servidor MCP da NextPay Gateway em suas ferramentas de IA favoritas,
       "servers": {
         "NextPayGateway": {
           "type": "http",
-          "url": "https://docs.nextpagamentos.com.br/mcp"
+          "url": "https://docs.nextpagamentos.io/mcp"
         }
       }
     }
@@ -153,12 +152,15 @@ O servidor MCP da NextPay Gateway expõe uma ferramenta de busca que permite:
   <Card title="Respostas mais precisas" icon="bullseye">
     As ferramentas de IA podem buscar informações diretamente da documentação oficial, fornecendo respostas mais precisas e atualizadas
   </Card>
+
   <Card title="Contexto em tempo real" icon="clock">
     Informações são recuperadas durante a geração da resposta, garantindo que o contexto mais recente seja usado
   </Card>
+
   <Card title="Busca proativa" icon="magnifying-glass">
     O LLM pode pesquisar automaticamente quando detecta que a documentação é relevante, sem necessidade de solicitação explícita
   </Card>
+
   <Card title="Integração nativa" icon="plug">
     Funciona nativamente com ferramentas populares de IA como Claude, Cursor, VS Code e outras
   </Card>
