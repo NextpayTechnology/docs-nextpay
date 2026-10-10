@@ -59,7 +59,11 @@ curl -X POST https://api.nextpagamentos.com.br/api/public/cashout \
 ## Resposta de Sucesso
 
 <ResponseField name="id" type="integer">
-  ID do cashout
+  ID numérico do cashout (mantido para integrações antigas)
+</ResponseField>
+
+<ResponseField name="uuid" type="string">
+  Identificador público do cashout (UUID). Use-o para consultar o saque e casar os webhooks
 </ResponseField>
 
 <ResponseField name="amount" type="string">
@@ -85,6 +89,7 @@ curl -X POST https://api.nextpagamentos.com.br/api/public/cashout \
 ```json Success - 201 Created
 {
   "id": 12345,
+  "uuid": "01a1271c-b3f0-7c21-9e4d-5a7b8c9d0e1f",
   "amount": "100.00",
   "netAmount": "95.00",
   "pixKey": "11999999999",
@@ -155,6 +160,7 @@ O webhook é enviado quando o status do saque muda, após o processamento do pos
 ```json
 {
   "id": 123,
+  "uuid": "01a1271c-b3f0-7c21-9e4d-5a7b8c9d0e1f",
   "userId": 1,
   "amount": "100.00",
   "pixKey": "11999999999",
@@ -177,7 +183,8 @@ O webhook é enviado quando o status do saque muda, após o processamento do pos
 
 | Campo         | Tipo           | Descrição                                                                   |
 | ------------- | -------------- | --------------------------------------------------------------------------- |
-| `id`          | integer        | ID interno do saque no NextPay Gateway                                      |
+| `id`          | integer        | ID numérico do saque no NextPay Gateway (mantido para integrações antigas)  |
+| `uuid`        | string         | Identificador público do saque (UUID), o mesmo devolvido na criação         |
 | `userId`      | integer        | ID do usuário que solicitou o saque                                         |
 | `amount`      | string         | Valor do saque em reais (formato string, ex: "100.00")                      |
 | `pixKey`      | string \| null | Chave PIX utilizada para o saque                                            |

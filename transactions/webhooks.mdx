@@ -158,6 +158,7 @@ O webhook permanente envia um payload com os seguintes campos:
 ```json
 {
   "id": 789,
+  "uuid": "01a1271c-a9a6-721f-938f-1bb03082bbb6",
   "userId": 1,
   "amount": "29900",
   "date": "2025-02-10T15:30:00.000Z",
@@ -175,6 +176,7 @@ O webhook permanente envia um payload com os seguintes campos:
     {
       "id": 789,
       "saleId": 789,
+      "saleUuid": "01a1271c-a9a6-721f-938f-1bb03082bbb6",
       "title": "Curso de Programação",
       "unitPrice": "29900",
       "quantity": 1,
@@ -189,7 +191,11 @@ O webhook permanente envia um payload com os seguintes campos:
 ### Campos do Webhook Permanente
 
 <ParamField body="id" type="integer" required>
-  ID da transação (Sale ID)
+  ID numérico da transação (Sale ID), mantido para integrações antigas
+</ParamField>
+
+<ParamField body="uuid" type="string" required>
+  Identificador público da transação (UUID). O mesmo `sale.uuid` devolvido na criação — use-o para casar a notificação com a venda
 </ParamField>
 
 <ParamField body="userId" type="integer" required>
@@ -253,7 +259,11 @@ O webhook permanente envia um payload com os seguintes campos:
 </ParamField>
 
 <ParamField body="saleItems[].saleId" type="integer" required>
-  ID da venda (mesmo que `id`)
+  ID numérico da venda (mesmo que `id`)
+</ParamField>
+
+<ParamField body="saleItems[].saleUuid" type="string" required>
+  Identificador público da venda (mesmo que `uuid`)
 </ParamField>
 
 <ParamField body="saleItems[].title" type="string" required>
@@ -410,6 +420,7 @@ O postback por transação envia um payload com os seguintes campos:
 ```json
 {
   "id": 789,
+  "uuid": "01a1271c-a9a6-721f-938f-1bb03082bbb6",
   "userId": 1,
   "amount": "29900",
   "date": "2025-02-10T15:30:00.000Z",
@@ -426,6 +437,7 @@ O postback por transação envia um payload com os seguintes campos:
     {
       "id": 789,
       "saleId": 789,
+      "saleUuid": "01a1271c-a9a6-721f-938f-1bb03082bbb6",
       "title": "Curso de Programação",
       "unitPrice": "29900",
       "quantity": 1,
@@ -439,7 +451,11 @@ O postback por transação envia um payload com os seguintes campos:
 ### Campos do Postback por Transação
 
 <ParamField body="id" type="integer" required>
-  ID da transação (Sale ID)
+  ID numérico da transação (Sale ID), mantido para integrações antigas
+</ParamField>
+
+<ParamField body="uuid" type="string" required>
+  Identificador público da transação (UUID), o mesmo `sale.uuid` devolvido na criação
 </ParamField>
 
 <ParamField body="userId" type="integer" required>
@@ -491,7 +507,7 @@ O postback por transação envia um payload com os seguintes campos:
 </ParamField>
 
 <ParamField body="saleItems" type="array" required>
-  Lista de itens da transação
+  Lista de itens da transação. Cada item traz `saleId` e `saleUuid` da venda
 </ParamField>
 
 <ParamField body="externalTransactionId" type="string" required>
@@ -503,6 +519,7 @@ O postback por transação envia um payload com os seguintes campos:
 | Campo | Webhook Permanente | Postback por Transação |
 |-------|-------------------|----------------------|
 | `id` | ✅ | ✅ |
+| `uuid` | ✅ | ✅ |
 | `userId` | ✅ | ✅ |
 | `amount` | ✅ | ✅ |
 | `date` | ✅ | ✅ |

@@ -10,6 +10,7 @@ Retornado pelo endpoint `GET /api/transactions/{id}`:
 ```json
 {
   "id": 12345,
+  "uuid": "01a1271c-a9a6-721f-938f-1bb03082bbb6",
   "status": "PAGO",
   "amount": 10000,
   "netAmount": 9500,
@@ -46,7 +47,11 @@ Retornado pelo endpoint `GET /api/transactions/{id}`:
 ### Campos
 
 <ParamField body="id" type="integer" required>
-  ID único da transação
+  ID numérico da transação (mantido para integrações antigas)
+</ParamField>
+
+<ParamField body="uuid" type="string" required>
+  Identificador público da transação (UUID). É o identificador recomendado para consultas e para casar webhooks
 </ParamField>
 
 <ParamField body="status" type="string" required>
@@ -126,6 +131,7 @@ Retornado pelo endpoint `POST /api/sales`:
   "message": "Venda criada com sucesso",
   "sale": {
     "id": 2486,
+    "uuid": "01a1271c-a9a6-721f-938f-1bb03082bbb6",
     "amount": "5000",
     "status": "PENDENTE",
     "paymentMethod": "PIX",
@@ -153,7 +159,11 @@ Retornado pelo endpoint `POST /api/sales`:
 ### Campos do Sale
 
 <ParamField body="id" type="integer" required>
-  ID único da venda criada
+  ID numérico da venda criada (mantido para integrações antigas)
+</ParamField>
+
+<ParamField body="uuid" type="string" required>
+  Identificador público da venda (UUID). Use-o para consultar a venda e casar os webhooks
 </ParamField>
 
 <ParamField body="status" type="string" required>

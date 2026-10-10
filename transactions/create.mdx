@@ -313,6 +313,10 @@ Este endpoint requer autenticação via API Keys:
   Dados adicionais da venda (objeto JSON livre)
 </ParamField>
 
+<Note>
+  A resposta traz `sale.uuid`, o identificador público da venda (UUID). Guarde e use o `uuid` para consultar a venda em [Buscar Transação](/transactions/get) e para casar os webhooks. O `sale.id` numérico continua presente para integrações antigas.
+</Note>
+
 <ResponseExample>
 
 ```json Success - PIX Pendente (201 Created)
@@ -320,6 +324,7 @@ Este endpoint requer autenticação via API Keys:
   "message": "Venda criada com sucesso",
   "sale": {
     "id": 2486,
+    "uuid": "01a1271c-a9a6-721f-938f-1bb03082bbb6",
     "amount": "5000",
     "status": "PENDENTE",
     "paymentMethod": "PIX",
@@ -350,6 +355,7 @@ Este endpoint requer autenticação via API Keys:
   "message": "Venda criada com sucesso",
   "sale": {
     "id": 2489,
+    "uuid": "01a12757-3c0e-7b4d-9f21-6a8e0c5d2b47",
     "amount": "2000",
     "status": "PAGO",
     "paymentMethod": "CREDIT_CARD",
@@ -379,6 +385,7 @@ Este endpoint requer autenticação via API Keys:
   "message": "Venda criada com sucesso",
   "sale": {
     "id": 2490,
+    "uuid": "01a1275a-1f7c-7e02-8c3b-4d9a7e6f1c08",
     "amount": "2000",
     "status": "RECUSADO",
     "paymentMethod": "CREDIT_CARD",
