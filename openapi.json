@@ -1,17 +1,17 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "NextPay API",
-    "description": "API pública do NextPay Gateway para processar pagamentos e gerenciar transações",
+    "title": "Nixfy API",
+    "description": "API pública do Nixfy Gateway para processar pagamentos e gerenciar transações",
     "version": "1.0.0",
     "contact": {
-      "name": "NextPay Support",
-      "url": "https://nextpagamentos.com.br"
+      "name": "Nixfy Support",
+      "url": "https://nixfypagamentos.com"
     }
   },
   "servers": [
     {
-      "url": "https://api.nextpagamentos.com.br",
+      "url": "https://api.nixfypagamentos.com",
       "description": "Servidor de Produção"
     }
   ],

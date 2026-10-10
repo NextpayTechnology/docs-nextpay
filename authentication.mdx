@@ -1,9 +1,9 @@
 ---
 title: "Autenticação"
-description: "Como autenticar suas requisições na API NextPay Gateway"
+description: "Como autenticar suas requisições na API Nixfy Gateway"
 ---
 
-Todas as requisições à API pública do NextPay Gateway requerem autenticação via **API Keys**.
+Todas as requisições à API pública do Nixfy Gateway requerem autenticação via **API Keys**.
 
 ## API Keys
 
@@ -16,7 +16,7 @@ As API Keys são compostas por dois componentes:
 
 <Steps>
   <Step title="Acesse o Dashboard">
-    Acesse o [Dashboard NextPay Gateway](https://app.nextpagamentos.com.br) e faça login na sua conta.
+    Acesse o [Dashboard Nixfy Gateway](https://app.nixfypagamentos.com) e faça login na sua conta.
   </Step>
   <Step title="Navegue até API Keys">
     No menu lateral, navegue até **Integrações** → **Credenciais de API**.
@@ -40,11 +40,11 @@ As API Keys são compostas por dois componentes:
 Inclua as chaves de API nos cabeçalhos de todas as requisições:
 
 <ParamField header="X-Api-Public-Key" type="string" required>
-  Sua chave pública da API (formato: `nxpay_...`)
+  Sua chave pública da API (formato: `pk_...`)
 </ParamField>
 
 <ParamField header="X-Api-Private-Key" type="string" required>
-  Sua chave privada da API (formato: `nxpay_...`)
+  Sua chave privada da API (formato: `sk_...`)
 </ParamField>
 
 ### Exemplos de Requisição
@@ -52,13 +52,13 @@ Inclua as chaves de API nos cabeçalhos de todas as requisições:
 <CodeGroup>
 
 ```bash cURL
-curl -X GET https://api.nextpagamentos.com.br/api/transactions/123 \
+curl -X GET https://api.nixfypagamentos.com/api/transactions/123 \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
   -H "X-Api-Private-Key: sua_chave_privada_aqui"
 ```
 
 ```javascript Node.js
-const response = await fetch('https://api.nextpagamentos.com.br/api/transactions/123', {
+const response = await fetch('https://api.nixfypagamentos.com/api/transactions/123', {
   method: 'GET',
   headers: {
     'X-Api-Public-Key': 'sua_chave_publica_aqui',
@@ -78,7 +78,7 @@ headers = {
 }
 
 response = requests.get(
-    'https://api.nextpagamentos.com.br/api/transactions/123',
+    'https://api.nixfypagamentos.com/api/transactions/123',
     headers=headers
 )
 ```

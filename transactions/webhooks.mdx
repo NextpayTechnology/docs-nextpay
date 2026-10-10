@@ -3,7 +3,7 @@ title: Webhooks e Postbacks
 description: Entenda como receber notificações de mudanças de status das transações
 ---
 
-O NextPay Gateway oferece duas formas de receber notificações sobre mudanças de status das transações:
+O Nixfy Gateway oferece duas formas de receber notificações sobre mudanças de status das transações:
 
 1. **Webhook Permanente**: configurado no painel, com **eventos assinados**, retry automático e log de entregas
 2. **Postback por Transação**: URL específica no campo `postbackUrl` ao criar uma venda
@@ -19,7 +19,7 @@ O NextPay Gateway oferece duas formas de receber notificações sobre mudanças 
   <Card title="Webhook Permanente" icon="link">
     - Configurado no painel
     - Você **escolhe quais eventos** quer receber
-    - Assinado com HMAC-SHA256 (`X-NextPay-Signature`)
+    - Assinado com HMAC-SHA256 (`X-Nixfy-Signature`)
     - Retry automático e reenvio manual
     - Cobre vendas, saques e carrinho abandonado
   </Card>
@@ -34,12 +34,12 @@ O NextPay Gateway oferece duas formas de receber notificações sobre mudanças 
 ## Webhook Permanente
 
 Você cadastra uma URL no painel e **escolhe quais eventos** quer receber. Quando
-o fato acontece, a NextPay faz um `POST` nessa URL com o payload em JSON e
+o fato acontece, a Nixfy faz um `POST` nessa URL com o payload em JSON e
 cabeçalhos que permitem validar a origem.
 
 ### Eventos disponíveis
 
-O nome do evento viaja no cabeçalho `X-NextPay-Event-Type` — é por essa string
+O nome do evento viaja no cabeçalho `X-Nixfy-Event-Type` — é por essa string
 que seu servidor decide o que fazer.
 
 | Evento | Disparado quando |
@@ -67,11 +67,11 @@ que seu servidor decide o que fazer.
 
 | Cabeçalho | Conteúdo |
 | --- | --- |
-| `X-NextPay-Signature` | `sha256=<hmac hex>` — a assinatura |
-| `X-NextPay-Timestamp` | Epoch em segundos do envio; entra no cálculo do HMAC |
-| `X-NextPay-Event-Id` | Id estável do evento — use para deduplicar |
-| `X-NextPay-Event-Type` | O evento, ex. `sale.paid` |
-| `X-NextPay-Redelivery` | Vem com `true` apenas em reenvio manual |
+| `X-Nixfy-Signature` | `sha256=<hmac hex>` — a assinatura |
+| `X-Nixfy-Timestamp` | Epoch em segundos do envio; entra no cálculo do HMAC |
+| `X-Nixfy-Event-Id` | Id estável do evento — use para deduplicar |
+| `X-Nixfy-Event-Type` | O evento, ex. `sale.paid` |
+| `X-Nixfy-Redelivery` | Vem com `true` apenas em reenvio manual |
 
 ### Validando a assinatura
 
@@ -93,7 +93,7 @@ Regras que seu receptor deve seguir:
 1. Recalcular o HMAC sobre `timestamp.corpo`, usando os bytes brutos
 2. Comparar em **tempo constante** (`timingSafeEqual`, `hash_equals`)
 3. Rejeitar timestamp fora da janela de **5 minutos** — sem isso, uma requisição capturada valeria para sempre
-4. Deduplicar pelo `X-NextPay-Event-Id`
+4. Deduplicar pelo `X-Nixfy-Event-Id`
 5. Responder `2xx` rápido e processar depois
 
 <Info>
@@ -114,7 +114,7 @@ Exemplos completos de validação, em Node e PHP, estão no painel em
 | `5xx`, falha de rede ou timeout | Até **3 tentativas**, com espera crescente |
 | Sem resposta em **10 segundos** | Abortamos a tentativa e reagendamos |
 
-O `X-NextPay-Event-Id` é **estável por fato**: `sale.paid` da venda 42 tem
+O `X-Nixfy-Event-Id` é **estável por fato**: `sale.paid` da venda 42 tem
 sempre o mesmo id, em qualquer tentativa ou reenvio. "Venda pendente" e "venda
 paga" da mesma venda são fatos diferentes, com ids diferentes.
 
@@ -131,7 +131,7 @@ payload enviado, status HTTP devolvido, número de tentativas e erro.
 O botão **Reenviar** manda o **mesmo payload** e o **mesmo `eventId`** — você
 recebe o fato que aconteceu, não o estado atual da venda. A assinatura é
 recalculada com timestamp novo, porque a original já estaria fora da janela, e a
-entrega vem com `X-NextPay-Redelivery: true`.
+entrega vem com `X-Nixfy-Redelivery: true`.
 
 ### Configuração
 
@@ -305,15 +305,15 @@ Configure o postback incluindo o campo `postbackUrl` ao criar a transação:
 
 ### Segurança
 
-Postbacks incluem assinatura HMAC-SHA256 no header `X-Signature` para validação de segurança. A assinatura é gerada usando a chave secreta `POSTBACK_SECRET_KEY` configurada no ambiente do NextPay Gateway.
+Postbacks incluem assinatura HMAC-SHA256 no header `X-Signature` para validação de segurança. A assinatura é gerada usando a chave secreta `POSTBACK_SECRET_KEY` configurada no ambiente do Nixfy Gateway.
 
 <Warning>
-**Importante**: Sempre valide a assinatura HMAC antes de processar a notificação. Isso garante que a requisição realmente veio do NextPay Gateway e não foi alterada durante a transmissão.
+**Importante**: Sempre valide a assinatura HMAC antes de processar a notificação. Isso garante que a requisição realmente veio do Nixfy Gateway e não foi alterada durante a transmissão.
 </Warning>
 
 **Como funciona a assinatura:**
 
-1. O NextPay Gateway gera uma assinatura HMAC-SHA256 do payload JSON usando a chave secreta `POSTBACK_SECRET_KEY`
+1. O Nixfy Gateway gera uma assinatura HMAC-SHA256 do payload JSON usando a chave secreta `POSTBACK_SECRET_KEY`
 2. A assinatura é enviada no header HTTP `X-Signature`
 3. Você deve validar a assinatura comparando com a assinatura esperada gerada localmente
 
@@ -370,7 +370,7 @@ def validate_signature(payload, signature, secret_key):
     Valida a assinatura HMAC-SHA256 do postback.
     
     IMPORTANTE: O JSON deve ser stringificado SEM ordenação de chaves,
-    exatamente como enviado pelo NextPay Gateway.
+    exatamente como enviado pelo Nixfy Gateway.
     """
     # Gerar assinatura esperada
     payload_json = json.dumps(payload, separators=(',', ':'))
@@ -398,7 +398,7 @@ def webhook_transacao():
 ```
 
 <Info>
-**Sobre a chave secreta**: A chave `POSTBACK_SECRET_KEY` é configurada no ambiente do NextPay Gateway. Esta é a mesma chave que você deve usar para validar as assinaturas dos postbacks. Entre em contato com o suporte técnico para obter ou configurar sua chave secreta de postback.
+**Sobre a chave secreta**: A chave `POSTBACK_SECRET_KEY` é configurada no ambiente do Nixfy Gateway. Esta é a mesma chave que você deve usar para validar as assinaturas dos postbacks. Entre em contato com o suporte técnico para obter ou configurar sua chave secreta de postback.
 
 **Nota importante**: O JSON do payload é stringificado **sem ordenação de chaves** (`JSON.stringify` padrão). Não use `sort_keys=True` no Python ou qualquer ordenação de chaves, pois isso resultará em assinaturas diferentes e a validação falhará.
 </Info>
@@ -520,7 +520,7 @@ O postback por transação envia um payload com os seguintes campos:
 | `transactionId` | ✅ | ❌ |
 | `type` | ✅ (`"TRANSACTION"`) | ❌ |
 | `externalTransactionId` | ❌ | ✅ |
-| **Assinatura HMAC** | ✅ (`X-NextPay-Signature`) | ✅ (`X-Signature`) |
+| **Assinatura HMAC** | ✅ (`X-Nixfy-Signature`) | ✅ (`X-Signature`) |
 
 ## Quando as Notificações São Enviadas
 
@@ -629,10 +629,10 @@ app.post('/webhook/permanente',
   express.raw({ type: 'application/json' }),
   (req, res) => {
     const corpoBruto = req.body.toString('utf8');
-    const timestamp = req.get('X-NextPay-Timestamp');
-    const recebida = req.get('X-NextPay-Signature') || '';
-    const eventId = req.get('X-NextPay-Event-Id');
-    const evento = req.get('X-NextPay-Event-Type');
+    const timestamp = req.get('X-Nixfy-Timestamp');
+    const recebida = req.get('X-Nixfy-Signature') || '';
+    const eventId = req.get('X-Nixfy-Event-Id');
+    const evento = req.get('X-Nixfy-Event-Type');
 
     // Recusa entregas antigas: sem isso, uma requisição capturada valeria sempre
     if (!timestamp || Math.abs(Date.now() / 1000 - Number(timestamp)) > 300) {
@@ -640,7 +640,7 @@ app.post('/webhook/permanente',
     }
 
     const esperada = 'sha256=' + crypto
-      .createHmac('sha256', process.env.NEXTPAY_WEBHOOK_SECRET)
+      .createHmac('sha256', process.env.NIXFY_WEBHOOK_SECRET)
       .update(timestamp + '.' + corpoBruto)
       .digest('hex');
 
@@ -682,7 +682,7 @@ def validate_signature(payload, signature, secret_key):
     """
     Valida a assinatura HMAC-SHA256.
     IMPORTANTE: Não use sort_keys=True - o JSON deve ser stringificado
-    exatamente como enviado pelo NextPay Gateway.
+    exatamente como enviado pelo Nixfy Gateway.
     """
     payload_json = json.dumps(payload, separators=(',', ':'))
     expected_signature = hmac.new(
@@ -715,17 +715,17 @@ processados = set()  # em produção, use Redis ou banco
 @app.route('/webhook/permanente', methods=['POST'])
 def webhook_permanente():
     corpo_bruto = request.get_data(as_text=True)  # bytes brutos, não request.json
-    timestamp = request.headers.get('X-NextPay-Timestamp', '')
-    recebida = request.headers.get('X-NextPay-Signature', '')
-    event_id = request.headers.get('X-NextPay-Event-Id')
-    evento = request.headers.get('X-NextPay-Event-Type')
+    timestamp = request.headers.get('X-Nixfy-Timestamp', '')
+    recebida = request.headers.get('X-Nixfy-Signature', '')
+    event_id = request.headers.get('X-Nixfy-Event-Id')
+    evento = request.headers.get('X-Nixfy-Event-Type')
 
     # Recusa entregas antigas: sem isso, uma requisição capturada valeria sempre
     if not timestamp or abs(time.time() - float(timestamp)) > 300:
         return jsonify({'error': 'Timestamp fora da janela'}), 401
 
     esperada = 'sha256=' + hmac.new(
-        os.environ['NEXTPAY_WEBHOOK_SECRET'].encode(),
+        os.environ['NIXFY_WEBHOOK_SECRET'].encode(),
         f"{timestamp}.{corpo_bruto}".encode(),
         hashlib.sha256
     ).hexdigest()

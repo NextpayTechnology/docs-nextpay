@@ -2,14 +2,14 @@
   "$schema": "https://mintlify.com/schema.json",
   "theme": "quill",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0A6B52",
+    "primary": "#7918FB",
+    "light": "#B57BFF",
+    "dark": "#4B0FC4",
     "background": {
       "dark": "#0F1419"
     }
   },
-  "name": "NextPay Gateway API",
+  "name": "Nixfy Gateway API",
   "logo": {
     "dark": "/logo/dark.png",
     "light": "/logo/light.png"
@@ -18,11 +18,11 @@
 
   "openapi": "/openapi.json",
   "api": {
-    "baseUrl": "https://api.nextpagamentos.com.br",
+    "baseUrl": "https://api.nixfypagamentos.com",
     "auth": {
       "method": "key",
       "name": "X-Api-Public-Key",
-      "inputPrefix": "nxpay_"
+      "inputPrefix": "pk_"
     },
     "playground": {
       "mode": "show"
@@ -81,16 +81,16 @@
   "topbarLinks": [
     {
       "name": "Suporte",
-      "url": "mailto:suporte@nextpagamentos.com.br"
+      "url": "mailto:suporte@nixfypagamentos.com"
     }
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://app.nextpagamentos.com.br"
+    "url": "https://app.nixfypagamentos.com"
   },
   "footer": {
     "socials": {
-      "instagram": "https://instagram.com/nextpagamentos"
+      "instagram": "https://instagram.com/nixfypagamentos"
     }
   }
 }

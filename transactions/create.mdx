@@ -1,7 +1,7 @@
 ---
 title: "Criar Transação"
-description: "Crie uma nova transação (venda) na plataforma usando a API pública do NextPay Gateway"
-api: "POST https://api.nextpagamentos.com.br/api/sales"
+description: "Crie uma nova transação (venda) na plataforma usando a API pública do Nixfy Gateway"
+api: "POST https://api.nixfypagamentos.com/api/sales"
 playground: true
 ---
 
@@ -407,7 +407,7 @@ Este endpoint requer autenticação via API Keys:
 <RequestExample>
 
 ```bash PIX Automático - Assinatura
-curl -X POST https://api.nextpagamentos.com.br/api/sales   -H "X-Api-Public-Key: sua_chave_publica_aqui"   -H "X-Api-Private-Key: sua_chave_privada_aqui"   -H "Content-Type: application/json"   -d '{
+curl -X POST https://api.nixfypagamentos.com/api/sales   -H "X-Api-Public-Key: sua_chave_publica_aqui"   -H "X-Api-Private-Key: sua_chave_privada_aqui"   -H "Content-Type: application/json"   -d '{
     "amount": 4990,
     "paymentMethod": "PIX_AUTOMATICO",
     "customer": {
@@ -438,7 +438,7 @@ curl -X POST https://api.nextpagamentos.com.br/api/sales   -H "X-Api-Public-Key:
 ```
 
 ```bash PIX Automático - Cobrar ciclo de mandato existente
-curl -X POST https://api.nextpagamentos.com.br/api/sales   -H "X-Api-Public-Key: sua_chave_publica_aqui"   -H "X-Api-Private-Key: sua_chave_privada_aqui"   -H "Content-Type: application/json"   -d '{
+curl -X POST https://api.nixfypagamentos.com/api/sales   -H "X-Api-Public-Key: sua_chave_publica_aqui"   -H "X-Api-Private-Key: sua_chave_privada_aqui"   -H "Content-Type: application/json"   -d '{
     "amount": 4990,
     "paymentMethod": "PIX_AUTOMATICO",
     "customer": {
@@ -456,7 +456,7 @@ curl -X POST https://api.nextpagamentos.com.br/api/sales   -H "X-Api-Public-Key:
 ```
 
 ```bash PIX - Produto Digital
-curl -X POST https://api.nextpagamentos.com.br/api/sales \
+curl -X POST https://api.nixfypagamentos.com/api/sales \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
   -H "X-Api-Private-Key: sua_chave_privada_aqui" \
   -H "Content-Type: application/json" \
@@ -489,7 +489,7 @@ curl -X POST https://api.nextpagamentos.com.br/api/sales \
 ```
 
 ```bash PIX - Produto Físico
-curl -X POST https://api.nextpagamentos.com.br/api/sales \
+curl -X POST https://api.nixfypagamentos.com/api/sales \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
   -H "X-Api-Private-Key: sua_chave_privada_aqui" \
   -H "Content-Type: application/json" \
@@ -532,7 +532,7 @@ curl -X POST https://api.nextpagamentos.com.br/api/sales \
 ```
 
 ```bash Cartão de Crédito
-curl -X POST https://api.nextpagamentos.com.br/api/sales \
+curl -X POST https://api.nixfypagamentos.com/api/sales \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
   -H "X-Api-Private-Key: sua_chave_privada_aqui" \
   -H "Content-Type: application/json" \
@@ -576,7 +576,7 @@ curl -X POST https://api.nextpagamentos.com.br/api/sales \
 ```
 
 ```bash PIX com UTM e Rastreamento
-curl -v -X POST "https://api.nextpagamentos.com.br/api/sales" \
+curl -v -X POST "https://api.nixfypagamentos.com/api/sales" \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
   -H "X-Api-Private-Key: sua_chave_privada_aqui" \
   -H "Content-Type: application/json" \

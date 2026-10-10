@@ -1,7 +1,7 @@
 ---
 title: "Criar Transferência"
 description: "Solicite um saque (cashout) do seu saldo disponível para uma chave PIX"
-api: "POST https://api.nextpagamentos.com.br/api/public/cashout"
+api: "POST https://api.nixfypagamentos.com/api/public/cashout"
 ---
 
 Solicita um saque (cashout) do seu saldo disponível para uma chave PIX.
@@ -43,7 +43,7 @@ Este endpoint requer autenticação via API Keys:
 <RequestExample>
 
 ```bash cURL
-curl -X POST https://api.nextpagamentos.com.br/api/public/cashout \
+curl -X POST https://api.nixfypagamentos.com/api/public/cashout \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
   -H "X-Api-Private-Key: sua_chave_privada_aqui" \
   -H "Content-Type: application/json" \
@@ -131,7 +131,7 @@ Para receber notificações automáticas sobre mudanças de status dos saques, v
 
 ### Como Configurar
 
-1. Acesse o painel do NextPay Gateway
+1. Acesse o painel do Nixfy Gateway
 2. Vá em **Menu lateral \> Integrações \> Adicionar Webhook**
 3. Configure a URL do seu webhook (ex: `https://seusite.com/webhook/cashout`)
 4. Em "Tipos de Notificação", marque **"Notificar Saques"**
@@ -177,7 +177,7 @@ O webhook é enviado quando o status do saque muda, após o processamento do pos
 
 | Campo         | Tipo           | Descrição                                                                   |
 | ------------- | -------------- | --------------------------------------------------------------------------- |
-| `id`          | integer        | ID interno do saque no NextPay Gateway                                      |
+| `id`          | integer        | ID interno do saque no Nixfy Gateway                                      |
 | `userId`      | integer        | ID do usuário que solicitou o saque                                         |
 | `amount`      | string         | Valor do saque em reais (formato string, ex: "100.00")                      |
 | `pixKey`      | string \| null | Chave PIX utilizada para o saque                                            |
