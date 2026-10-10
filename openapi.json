@@ -193,7 +193,13 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "integer"
+            "type": "integer",
+            "description": "ID numérico da venda (mantido para integrações antigas)"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identificador público da venda (recomendado)"
           },
           "status": {
             "type": "string",
@@ -716,7 +722,13 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "type": "integer"
+                          "type": "integer",
+                          "description": "ID numérico da venda (mantido para integrações antigas)"
+                        },
+                        "uuid": {
+                          "type": "string",
+                          "format": "uuid",
+                          "description": "Identificador público da venda (recomendado)"
                         },
                         "amount": {
                           "type": "string"
@@ -801,6 +813,7 @@
                       "message": "Venda criada com sucesso",
                       "sale": {
                         "id": 2486,
+                        "uuid": "01a1271c-a9a6-721f-938f-1bb03082bbb6",
                         "amount": "5000",
                         "status": "PENDENTE",
                         "paymentMethod": "PIX",
@@ -830,6 +843,7 @@
                       "message": "Venda criada com sucesso",
                       "sale": {
                         "id": 2489,
+                        "uuid": "01a12757-3c0e-7b4d-9f21-6a8e0c5d2b47",
                         "amount": "2000",
                         "status": "PAGO",
                         "paymentMethod": "CREDIT_CARD",
@@ -858,6 +872,7 @@
                       "message": "Venda criada com sucesso",
                       "sale": {
                         "id": 2490,
+                        "uuid": "01a1275a-1f7c-7e02-8c3b-4d9a7e6f1c08",
                         "amount": "2000",
                         "status": "RECUSADO",
                         "paymentMethod": "CREDIT_CARD",
@@ -920,7 +935,7 @@
     "/api/transactions/{id}": {
       "get": {
         "summary": "Buscar Transação",
-        "description": "Recupera os detalhes de uma transação específica usando o ID da venda",
+        "description": "Recupera os detalhes de uma transação específica usando o uuid da venda (ou o ID numérico, mantido para integrações antigas)",
         "operationId": "getTransaction",
         "tags": [
           "Transactions"
@@ -936,9 +951,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "description": "ID da venda",
+            "description": "uuid da venda (recomendado) ou ID numérico",
             "schema": {
-              "type": "integer"
+              "type": "string",
+              "example": "01a1271c-a9a6-721f-938f-1bb03082bbb6"
             }
           }
         ],
@@ -1063,7 +1079,13 @@
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "ID numérico do cashout (mantido para integrações antigas)"
+                    },
+                    "uuid": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "Identificador público do cashout (recomendado)"
                     },
                     "amount": {
                       "type": "string"

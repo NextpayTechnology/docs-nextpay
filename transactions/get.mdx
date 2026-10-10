@@ -1,10 +1,10 @@
 ---
 title: "Buscar Transação"
-description: "Recupere os detalhes de uma transação específica usando o ID da venda"
+description: "Recupere os detalhes de uma transação específica usando o uuid da venda"
 api: "GET https://api.nixfypagamentos.com/api/transactions/{id}"
 ---
 
-Recupera os detalhes de uma transação específica usando o ID da venda.
+Recupera os detalhes de uma transação específica usando o `uuid` da venda (ou o `id` numérico, mantido para integrações antigas).
 
 <Endpoint method="get" url="/api/transactions/{id}" />
 
@@ -22,16 +22,20 @@ Este endpoint requer autenticação via API Keys:
 
 ## Parâmetros
 
-<ParamField path="id" type="integer" required>
-  ID da venda (Sale ID)
+<ParamField path="id" type="string" required>
+  `uuid` da venda (recomendado), como `01a1271c-a9a6-721f-938f-1bb03082bbb6`. O `id` numérico também é aceito, para integrações antigas.
 </ParamField>
+
+<Note>
+  Prefira o `uuid`: ele é o identificador público da venda e não revela informação sequencial. O `id` numérico continua aceito e devolvido para não quebrar integrações existentes.
+</Note>
 
 ## Exemplo de Requisição
 
 <RequestExample>
 
 ```bash cURL
-curl -X GET https://api.nixfypagamentos.com/api/transactions/12345 \
+curl -X GET https://api.nixfypagamentos.com/api/transactions/01a1271c-a9a6-721f-938f-1bb03082bbb6 \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
   -H "X-Api-Private-Key: sua_chave_privada_aqui"
 ```
@@ -41,7 +45,11 @@ curl -X GET https://api.nixfypagamentos.com/api/transactions/12345 \
 ## Resposta de Sucesso
 
 <ResponseField name="id" type="integer">
-  ID da venda
+  ID numérico da venda (mantido para integrações antigas)
+</ResponseField>
+
+<ResponseField name="uuid" type="string">
+  Identificador público da venda (UUID). Use este para consultar e referenciar a venda
 </ResponseField>
 
 <ResponseField name="status" type="string">
@@ -155,6 +163,7 @@ curl -X GET https://api.nixfypagamentos.com/api/transactions/12345 \
 ```json Success - 200 OK
 {
   "id": 12345,
+  "uuid": "01a1271c-a9a6-721f-938f-1bb03082bbb6",
   "status": "PAGO",
   "amount": 10000,
   "netAmount": 9500,
@@ -194,14 +203,14 @@ curl -X GET https://api.nixfypagamentos.com/api/transactions/12345 \
 
 ### 400 Bad Request
 
-ID inválido.
+ID inválido (nem `uuid` nem número).
 
 <ResponseExample>
 
 ```json Error - 400 Bad Request
 {
   "message": "ID inválido",
-  "error": "O ID da transação deve ser um número válido"
+  "error": "O ID da venda deve ser o uuid ou um número válido"
 }
 ```
 

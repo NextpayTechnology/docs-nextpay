@@ -10,6 +10,7 @@ Retornado pelo endpoint `POST /api/public/cashout`:
 ```json
 {
   "id": 12345,
+  "uuid": "01a1271c-b3f0-7c21-9e4d-5a7b8c9d0e1f",
   "amount": "100.00",
   "netAmount": "95.00",
   "pixKey": "11999999999",
@@ -26,11 +27,12 @@ Retornado pelo endpoint `POST /api/public/cashout`:
 
 ## Objeto Withdrawal (Buscar Transferência)
 
-Retornado pelo endpoint `GET /api/public/cashout/{id}`:
+Retornado pelo endpoint `GET /api/public/cashout/{id}`. O `{id}` pode ser o `uuid` (recomendado) ou o `id` numérico, mantido para integrações antigas:
 
 ```json
 {
   "id": 12345,
+  "uuid": "01a1271c-b3f0-7c21-9e4d-5a7b8c9d0e1f",
   "amount": "100.00",
   "netAmount": "95.00",
   "pixKey": "11999999999",
@@ -49,7 +51,11 @@ Retornado pelo endpoint `GET /api/public/cashout/{id}`:
 ### Campos
 
 <ParamField body="id" type="integer" required>
-  ID único da transferência
+  ID numérico da transferência (mantido para integrações antigas)
+</ParamField>
+
+<ParamField body="uuid" type="string" required>
+  Identificador público da transferência (UUID). É o identificador recomendado para consultas e para casar webhooks
 </ParamField>
 
 <ParamField body="amount" type="string" required>
