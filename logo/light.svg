@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="180" viewBox="0 0 600 180">
+  <!-- Placeholder: trocar pelo logo oficial da InnfraTech -->
+  <rect x="20" y="40" width="100" height="100" rx="24" fill="none" stroke="#1ACE8B" stroke-width="8"/>
+  <text x="70" y="108" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="700" fill="#1ACE8B" text-anchor="middle">IT</text>
+  <text x="145" y="112" font-family="Inter, Arial, sans-serif" font-size="64" font-weight="700" fill="#010C1E">Innfra<tspan fill="#1ACE8B">Tech</tspan></text>
+</svg>

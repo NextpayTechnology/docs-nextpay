@@ -2,23 +2,23 @@
   "$schema": "https://mintlify.com/schema.json",
   "theme": "quill",
   "colors": {
-    "primary": "#7918FB",
-    "light": "#B57BFF",
-    "dark": "#4B0FC4",
+    "primary": "#1ACE8B",
+    "light": "#1FF2A3",
+    "dark": "#0F9E6A",
     "background": {
-      "dark": "#0F1419"
+      "dark": "#010C1E"
     }
   },
-  "name": "Nixfy Gateway API",
+  "name": "InnfraTech Gateway API",
   "logo": {
-    "dark": "/logo/dark.png",
-    "light": "/logo/light.png"
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
   },
-  "favicon": "/logo/favicon.png",
+  "favicon": "/logo/favicon.svg",
 
   "openapi": "/openapi.json",
   "api": {
-    "baseUrl": "https://api.nixfypagamentos.com",
+    "baseUrl": "https://api.innfratech.com",
     "auth": {
       "method": "key",
       "name": "X-Api-Public-Key",
@@ -81,16 +81,16 @@
   "topbarLinks": [
     {
       "name": "Suporte",
-      "url": "mailto:suporte@nixfypagamentos.com"
+      "url": "mailto:suporte@innfratech.com"
     }
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://app.nixfypagamentos.com"
+    "url": "https://app.innfratech.com/login"
   },
   "footer": {
     "socials": {
-      "instagram": "https://instagram.com/nixfypagamentos"
+      "instagram": "https://instagram.com/innfratech"
     }
   }
 }

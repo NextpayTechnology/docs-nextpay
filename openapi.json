@@ -1,17 +1,17 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Nixfy API",
-    "description": "API pública do Nixfy Gateway para processar pagamentos e gerenciar transações",
+    "title": "InnfraTech API",
+    "description": "API pública do InnfraTech Gateway para processar pagamentos e gerenciar transações",
     "version": "1.0.0",
     "contact": {
-      "name": "Nixfy Support",
-      "url": "https://nixfypagamentos.com"
+      "name": "InnfraTech Support",
+      "url": "https://innfratech.com"
     }
   },
   "servers": [
     {
-      "url": "https://api.nixfypagamentos.com",
+      "url": "https://api.innfratech.com",
       "description": "Servidor de Produção"
     }
   ],

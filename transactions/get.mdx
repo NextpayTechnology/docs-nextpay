@@ -1,7 +1,7 @@
 ---
 title: "Buscar Transação"
 description: "Recupere os detalhes de uma transação específica usando o uuid da venda"
-api: "GET https://api.nixfypagamentos.com/api/transactions/{id}"
+api: "GET https://api.innfratech.com/api/transactions/{id}"
 ---
 
 Recupera os detalhes de uma transação específica usando o `uuid` da venda (ou o `id` numérico, mantido para integrações antigas).
@@ -35,7 +35,7 @@ Este endpoint requer autenticação via API Keys:
 <RequestExample>
 
 ```bash cURL
-curl -X GET https://api.nixfypagamentos.com/api/transactions/01a1271c-a9a6-721f-938f-1bb03082bbb6 \
+curl -X GET https://api.innfratech.com/api/transactions/01a1271c-a9a6-721f-938f-1bb03082bbb6 \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
   -H "X-Api-Private-Key: sua_chave_privada_aqui"
 ```

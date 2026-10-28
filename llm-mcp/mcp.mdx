@@ -1,9 +1,9 @@
 ---
 title: "Model Context Protocol (MCP)"
-description: "Conecte a documentação da Nixfy Gateway API a ferramentas de IA com nosso servidor MCP hospedado"
+description: "Conecte a documentação da InnfraTech Gateway API a ferramentas de IA com nosso servidor MCP hospedado"
 ---
 
-Conecte a documentação e endpoints da API Nixfy Gateway a ferramentas de IA através do nosso servidor MCP (Model Context Protocol) hospedado.
+Conecte a documentação e endpoints da API InnfraTech Gateway a ferramentas de IA através do nosso servidor MCP (Model Context Protocol) hospedado.
 
 <Note>
   Esta página contém instruções completas para configurar o servidor MCP. **Não acesse a URL diretamente no navegador**. Siga as instruções abaixo para configurar corretamente em sua ferramenta de IA preferida.
@@ -11,27 +11,27 @@ Conecte a documentação e endpoints da API Nixfy Gateway a ferramentas de IA at
 
 ## O que é MCP?
 
-O Model Context Protocol (MCP) é um protocolo aberto que cria conexões padronizadas entre aplicações de IA e serviços externos. A Nixfy disponibiliza um servidor MCP público que permite que ferramentas de IA como Claude, Cursor, Goose e outras se conectem diretamente à documentação da API Nixfy Gateway, facilitando a integração e o desenvolvimento.
+O Model Context Protocol (MCP) é um protocolo aberto que cria conexões padronizadas entre aplicações de IA e serviços externos. A InnfraTech disponibiliza um servidor MCP público que permite que ferramentas de IA como Claude, Cursor, Goose e outras se conectem diretamente à documentação da API InnfraTech Gateway, facilitando a integração e o desenvolvimento.
 
 ## Como funciona
 
-O servidor MCP da Nixfy permite que ferramentas de IA acessem a documentação completa da API Nixfy Gateway em tempo real. Quando você conecta o servidor MCP em sua ferramenta de IA preferida, ela pode:
+O servidor MCP da InnfraTech permite que ferramentas de IA acessem a documentação completa da API InnfraTech Gateway em tempo real. Quando você conecta o servidor MCP em sua ferramenta de IA preferida, ela pode:
 
-- Pesquisar proativamente a documentação da Nixfy enquanto gera respostas, sem necessidade de solicitação explícita
-- Determinar automaticamente quando usar a documentação da Nixfy com base no contexto da conversa
+- Pesquisar proativamente a documentação da InnfraTech enquanto gera respostas, sem necessidade de solicitação explícita
+- Determinar automaticamente quando usar a documentação da InnfraTech com base no contexto da conversa
 - Incorporar informações atualizadas sobre endpoints, parâmetros, exemplos de código e boas práticas diretamente nas respostas
 - Fornecer respostas mais precisas sobre integração com PIX, cartões, transferências e outras funcionalidades da API
 
-**Exemplo prático**: Se você perguntar "Como criar uma transação PIX?", a ferramenta de IA pode automaticamente buscar na documentação da Nixfy informações sobre o endpoint `/api/sales`, parâmetros necessários, exemplos de código e até mesmo verificar os status possíveis da transação, tudo sem que você precise navegar manualmente pela documentação.
+**Exemplo prático**: Se você perguntar "Como criar uma transação PIX?", a ferramenta de IA pode automaticamente buscar na documentação da InnfraTech informações sobre o endpoint `/api/sales`, parâmetros necessários, exemplos de código e até mesmo verificar os status possíveis da transação, tudo sem que você precise navegar manualmente pela documentação.
 
 ## URL do servidor MCP
 
-O servidor MCP da Nixfy está disponível publicamente na seguinte URL:
+O servidor MCP da InnfraTech está disponível publicamente na seguinte URL:
 
 <CodeGroup>
 
 ```text URL do servidor MCP
-https://docs.nixfypagamentos.com/mcp
+https://docs.innfratech.com/mcp
 ```
 
 </CodeGroup>
@@ -46,7 +46,7 @@ https://docs.nixfypagamentos.com/mcp
 
 ## Como usar o servidor MCP
 
-Para usar o servidor MCP da Nixfy Gateway em suas ferramentas de IA favoritas, siga as instruções abaixo:
+Para usar o servidor MCP da InnfraTech Gateway em suas ferramentas de IA favoritas, siga as instruções abaixo:
 
 <Tabs>
   <Tab title="Claude">
@@ -54,16 +54,16 @@ Para usar o servidor MCP da Nixfy Gateway em suas ferramentas de IA favoritas, s
 
     1. Acesse a página [Connectors](https://claude.ai/settings/connectors) nas configurações do Claude
     2. Selecione **Add custom connector**
-    3. Adicione o servidor MCP da Nixfy:
-       - **Name**: `Nixfy Gateway`
-       - **URL**: `https://docs.nixfypagamentos.com/mcp`
+    3. Adicione o servidor MCP da InnfraTech:
+       - **Name**: `InnfraTech Gateway`
+       - **URL**: `https://docs.innfratech.com/mcp`
     4. Selecione **Add**
 
     ### Usar no chat
 
     1. Ao usar o Claude, selecione o botão de anexos (ícone de mais)
-    2. Selecione o servidor MCP da Nixfy Gateway
-    3. Faça perguntas sobre a API Nixfy Gateway
+    2. Selecione o servidor MCP da InnfraTech Gateway
+    3. Faça perguntas sobre a API InnfraTech Gateway
 
     <Tip>
       Veja a [documentação do Model Context Protocol](https://modelcontextprotocol.io/docs/tutorials/use-remote-mcp-server#connecting-to-a-remote-mcp-server) para mais detalhes.
@@ -72,10 +72,10 @@ Para usar o servidor MCP da Nixfy Gateway em suas ferramentas de IA favoritas, s
   <Tab title="Claude Code">
     ### Instalar via linha de comando
 
-    Execute o seguinte comando para adicionar o servidor MCP da Nixfy:
+    Execute o seguinte comando para adicionar o servidor MCP da InnfraTech:
 
     ```bash
-    claude mcp add --transport http NixfyGateway https://docs.nixfypagamentos.com/mcp
+    claude mcp add --transport http InnfraTechGateway https://docs.innfratech.com/mcp
     ```
 
     ### Testar a conexão
@@ -99,8 +99,8 @@ Para usar o servidor MCP da Nixfy Gateway em suas ferramentas de IA favoritas, s
     ```json
     {
       "mcpServers": {
-        "NixfyGateway": {
-          "url": "https://docs.nixfypagamentos.com/mcp"
+        "InnfraTechGateway": {
+          "url": "https://docs.innfratech.com/mcp"
         }
       }
     }
@@ -108,7 +108,7 @@ Para usar o servidor MCP da Nixfy Gateway em suas ferramentas de IA favoritas, s
 
     ### Testar a conexão
 
-    No chat do Cursor, pergunte "What tools do you have available?" O Cursor deve mostrar o servidor MCP da Nixfy Gateway como uma ferramenta disponível.
+    No chat do Cursor, pergunte "What tools do you have available?" O Cursor deve mostrar o servidor MCP da InnfraTech Gateway como uma ferramenta disponível.
 
     <Tip>
       Veja a [documentação do Cursor](https://docs.cursor.com/en/context/mcp#installing-mcp-servers) para mais detalhes.
@@ -123,9 +123,9 @@ Para usar o servidor MCP da Nixfy Gateway em suas ferramentas de IA favoritas, s
     ```json
     {
       "servers": {
-        "NixfyGateway": {
+        "InnfraTechGateway": {
           "type": "http",
-          "url": "https://docs.nixfypagamentos.com/mcp"
+          "url": "https://docs.innfratech.com/mcp"
         }
       }
     }
@@ -139,7 +139,7 @@ Para usar o servidor MCP da Nixfy Gateway em suas ferramentas de IA favoritas, s
 
 ## Ferramentas disponíveis
 
-O servidor MCP da Nixfy Gateway expõe uma ferramenta de busca que permite:
+O servidor MCP da InnfraTech Gateway expõe uma ferramenta de busca que permite:
 
 - **Pesquisar documentação**: Buscar informações relevantes em toda a documentação da API
 - **Encontrar exemplos de código**: Localizar exemplos de implementação específicos

@@ -1,9 +1,9 @@
 ---
 title: "Autenticação"
-description: "Como autenticar suas requisições na API Nixfy Gateway"
+description: "Como autenticar suas requisições na API InnfraTech Gateway"
 ---
 
-Todas as requisições à API pública do Nixfy Gateway requerem autenticação via **API Keys**.
+Todas as requisições à API pública do InnfraTech Gateway requerem autenticação via **API Keys**.
 
 ## API Keys
 
@@ -16,7 +16,7 @@ As API Keys são compostas por dois componentes:
 
 <Steps>
   <Step title="Acesse o Dashboard">
-    Acesse o [Dashboard Nixfy Gateway](https://app.nixfypagamentos.com) e faça login na sua conta.
+    Acesse o [Dashboard InnfraTech Gateway](https://app.innfratech.com/login) e faça login na sua conta.
   </Step>
   <Step title="Navegue até API Keys">
     No menu lateral, navegue até **Integrações** → **Credenciais de API**.
@@ -52,13 +52,13 @@ Inclua as chaves de API nos cabeçalhos de todas as requisições:
 <CodeGroup>
 
 ```bash cURL
-curl -X GET https://api.nixfypagamentos.com/api/transactions/123 \
+curl -X GET https://api.innfratech.com/api/transactions/123 \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
   -H "X-Api-Private-Key: sua_chave_privada_aqui"
 ```
 
 ```javascript Node.js
-const response = await fetch('https://api.nixfypagamentos.com/api/transactions/123', {
+const response = await fetch('https://api.innfratech.com/api/transactions/123', {
   method: 'GET',
   headers: {
     'X-Api-Public-Key': 'sua_chave_publica_aqui',
@@ -78,7 +78,7 @@ headers = {
 }
 
 response = requests.get(
-    'https://api.nixfypagamentos.com/api/transactions/123',
+    'https://api.innfratech.com/api/transactions/123',
     headers=headers
 )
 ```
