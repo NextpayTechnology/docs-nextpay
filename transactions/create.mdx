@@ -123,25 +123,6 @@ Este endpoint requer autenticação via API Keys:
   acontece a partir de `dataInicial`, e você recebe o webhook quando ela ocorrer.
 </Warning>
 
-<ResponseExample>
-
-```json Jornadas 1 e 2 — autorização sem cobrança (201 Created)
-{
-  "pixAutomatico": {
-    "idRec": "RR0908935620260829716b70f6b05",
-    "idSolicRec": null,
-    "jornada": 2,
-    "status": "CRIADA",
-    "qrCode": "00020101021226830014BR.GOV.BCB.PIX...",
-    "contrato": "assinatura-8842"
-  },
-  "sale": null,
-  "message": "Autorização criada. Nenhuma cobrança agora — o primeiro ciclo será cobrado a partir de dataInicial."
-}
-```
-
-</ResponseExample>
-
 <Info>
   O `qrCode` é o código copia-e-cola que o cliente usa para autorizar. Nas
   jornadas 3 e 4 ele é **composto**: a mesma leitura paga a primeira parcela e
@@ -344,7 +325,8 @@ Este endpoint requer autenticação via API Keys:
       }
     },
     "shipping": null,
-    "createdAt": "2025-12-20T05:55:39.372Z"
+    "createdAt": "2025-12-20T05:55:39.372Z",
+    "subscription": null
   }
 }
 ```
@@ -374,7 +356,8 @@ Este endpoint requer autenticação via API Keys:
       }
     },
     "shipping": "{\"street\":\"Rua das Flores\",\"streetNumber\":\"123\",\"complement\":\"Apartamento 45\",\"neighborhood\":\"Jardim Paulista\",\"city\":\"São Paulo\",\"state\":\"SP\",\"zipCode\":\"04567010\",\"country\":\"br\"}",
-    "createdAt": "2025-12-20T16:19:58.176Z"
+    "createdAt": "2025-12-20T16:19:58.176Z",
+    "subscription": null
   }
 }
 ```
@@ -404,8 +387,121 @@ Este endpoint requer autenticação via API Keys:
       }
     },
     "shipping": "{\"street\":\"Rua das Flores\",\"streetNumber\":\"123\",\"complement\":\"Apartamento 45\",\"neighborhood\":\"Jardim Paulista\",\"city\":\"São Paulo\",\"state\":\"SP\",\"zipCode\":\"04567010\",\"country\":\"br\"}",
-    "createdAt": "2025-12-20T16:22:43.336Z"
+    "createdAt": "2025-12-20T16:22:43.336Z",
+    "subscription": null
   }
+}
+```
+
+
+```json Success - Cartão de Débito Pago (201 Created)
+{
+  "message": "Venda criada com sucesso",
+  "sale": {
+    "id": 2491,
+    "uuid": "01a1275d-8b2e-7c41-a6d0-3f5e9b1c7a24",
+    "amount": "8500",
+    "status": "PAGO",
+    "paymentMethod": "DEBIT_CARD",
+    "customer": {
+      "name": "Pedro Henrique Santos",
+      "email": "pedro.santos@exemplo.com.br",
+      "document": "33344455566",
+      "phone": "11955554444"
+    },
+    "payment": {
+      "method": "DEBIT_CARD",
+      "installments": null,
+      "card": {
+        "lastDigits": "1111",
+        "brand": "VISA"
+      }
+    },
+    "shipping": null,
+    "createdAt": "2025-12-20T16:25:10.512Z",
+    "subscription": null
+  }
+}
+```
+
+
+```json Success - Boleto Pendente (201 Created)
+{
+  "message": "Venda criada com sucesso",
+  "sale": {
+    "id": 2492,
+    "uuid": "01a12761-4d9f-7a13-b2c8-9e0f6a3d5b71",
+    "amount": "45000",
+    "status": "PENDENTE",
+    "paymentMethod": "BOLETO",
+    "customer": {
+      "name": "Roberto Silva Oliveira",
+      "email": "roberto.oliveira@exemplo.com.br",
+      "document": "77788899900",
+      "phone": "11944443333"
+    },
+    "payment": {
+      "method": "BOLETO",
+      "installments": null,
+      "boleto": {
+        "code": "34191790010104351004791020150008291070026000",
+        "url": "https://boleto.exemplo.com.br/v/01a12761-4d9f-7a13-b2c8-9e0f6a3d5b71",
+        "pdf": "https://boleto.exemplo.com.br/v/01a12761-4d9f-7a13-b2c8-9e0f6a3d5b71.pdf",
+        "expiresAt": "2025-12-23T23:59:59.000Z"
+      }
+    },
+    "shipping": null,
+    "createdAt": "2025-12-20T16:28:02.904Z",
+    "subscription": null
+  }
+}
+```
+
+
+```json Success - PIX Automático Jornadas 3 e 4 (201 Created)
+{
+  "message": "Venda criada com sucesso",
+  "sale": {
+    "id": 2493,
+    "uuid": "01a12764-0a6b-7f58-8d14-c2b7e5a9f306",
+    "amount": "4990",
+    "status": "PENDENTE",
+    "paymentMethod": "PIX_AUTOMATICO",
+    "customer": {
+      "name": "Maria Oliveira",
+      "email": "maria.oliveira@exemplo.com.br",
+      "document": "12345678900",
+      "phone": "11999999999"
+    },
+    "payment": {
+      "method": "PIX_AUTOMATICO",
+      "installments": null,
+      "pix": {
+        "key": "00020101021226830014BR.GOV.BCB.PIX...",
+        "qrCodeBase64": null,
+        "expiresAt": null
+      }
+    },
+    "shipping": null,
+    "createdAt": "2025-12-20T16:31:47.220Z",
+    "subscription": null
+  }
+}
+```
+
+
+```json Success - PIX Automático Jornadas 1 e 2 (201 Created)
+{
+  "pixAutomatico": {
+    "idRec": "RR0908935620260829716b70f6b05",
+    "idSolicRec": null,
+    "jornada": 2,
+    "status": "CRIADA",
+    "qrCode": "00020101021226830014BR.GOV.BCB.PIX...",
+    "contrato": "assinatura-8842"
+  },
+  "sale": null,
+  "message": "Autorização criada. Nenhuma cobrança agora — o primeiro ciclo será cobrado a partir de dataInicial."
 }
 ```
 
@@ -582,6 +678,74 @@ curl -X POST https://api.innfratech.com/api/sales \
   }'
 ```
 
+```bash Cartão de Débito
+curl -X POST https://api.innfratech.com/api/sales \
+  -H "X-Api-Public-Key: sua_chave_publica_aqui" \
+  -H "X-Api-Private-Key: sua_chave_privada_aqui" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 8500,
+    "paymentMethod": "DEBIT_CARD",
+    "customer": {
+      "name": "Pedro Henrique Santos",
+      "email": "pedro.santos@exemplo.com.br",
+      "document": {
+        "type": "cpf",
+        "number": "33344455566"
+      },
+      "phone": "11955554444"
+    },
+    "card": {
+      "number": "4111111111111111",
+      "holderName": "PEDRO H SANTOS",
+      "expirationMonth": "03",
+      "expirationYear": "2027",
+      "cvv": "789"
+    },
+    "items": [
+      {
+        "title": "Fone de Ouvido Bluetooth",
+        "unitPrice": 8500,
+        "quantity": 1,
+        "tangible": false
+      }
+    ],
+    "postbackUrl": "https://seupostbackurl.com.br/webhook/transacao"
+  }'
+```
+
+```bash Boleto
+curl -X POST https://api.innfratech.com/api/sales \
+  -H "X-Api-Public-Key: sua_chave_publica_aqui" \
+  -H "X-Api-Private-Key: sua_chave_privada_aqui" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 45000,
+    "paymentMethod": "BOLETO",
+    "customer": {
+      "name": "Roberto Silva Oliveira",
+      "email": "roberto.oliveira@exemplo.com.br",
+      "document": {
+        "type": "cpf",
+        "number": "77788899900"
+      },
+      "phone": "11944443333"
+    },
+    "boleto": {
+      "expiresInDays": 3
+    },
+    "items": [
+      {
+        "title": "Cadeira Gamer Profissional",
+        "unitPrice": 45000,
+        "quantity": 1,
+        "tangible": false
+      }
+    ],
+    "postbackUrl": "https://seupostbackurl.com.br/webhook/transacao"
+  }'
+```
+
 ```bash PIX com UTM e Rastreamento
 curl -v -X POST "https://api.innfratech.com/api/sales" \
   -H "X-Api-Public-Key: sua_chave_publica_aqui" \
@@ -638,9 +802,9 @@ curl -v -X POST "https://api.innfratech.com/api/sales" \
 
 ## Códigos de Erro
 
-<ResponseExample>
+<CodeGroup>
 
-```json Error - 400 Bad Request
+```json 400 Bad Request
 {
   "message": "Campos obrigatórios faltando",
   "error": "Dados inválidos",
@@ -650,29 +814,36 @@ curl -v -X POST "https://api.innfratech.com/api/sales" \
 }
 ```
 
-</ResponseExample>
-
-<ResponseExample>
-
-```json Error - 401 Unauthorized
+```json 401 Unauthorized
 {
   "message": "Combinação de chaves de API inválida",
   "details": "Verifique se ambas as chaves pertencem ao mesmo usuário e estão corretas"
 }
 ```
 
-</ResponseExample>
-
-<ResponseExample>
-
-```json Error - 500 Internal Server Error
+```json 403 Produto Proibido
 {
-  "message": "Erro ao criar venda",
-  "error": "Falha ao processar pagamento no momento. Tente novamente mais tarde."
+  "message": "Venda bloqueada: produtos proibidos detectados",
+  "code": "BLACKLISTED_PRODUCTS",
+  "violations": [
+    {
+      "item": "Nome do produto enviado",
+      "pattern": "termo proibido",
+      "description": "Motivo cadastrado para o bloqueio"
+    }
+  ]
 }
 ```
 
-</ResponseExample>
+```json 500 Internal Server Error
+{
+  "message": "Erro ao criar venda",
+  "error": "Falha ao processar pagamento no momento. Tente novamente mais tarde.",
+  "details": null
+}
+```
+
+</CodeGroup>
 
 ### Status HTTP
 
@@ -681,5 +852,6 @@ curl -v -X POST "https://api.innfratech.com/api/sales" \
 | `201`  | Venda criada com sucesso                             |
 | `400`  | Dados inválidos ou campos obrigatórios faltando      |
 | `401`  | Não autorizado - Chaves de API inválidas ou ausentes |
+| `403`  | Venda bloqueada por conter produtos proibidos        |
 | `422`  | Erro de validação (ex: valor mínimo não atingido)    |
 | `500`  | Erro interno do servidor                             |

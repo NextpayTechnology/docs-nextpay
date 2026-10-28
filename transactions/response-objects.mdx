@@ -226,12 +226,48 @@ Retornado pelo endpoint `POST /api/sales`:
   Data de expiração do PIX (ISO 8601). `null` se não expira
 </ParamField>
 
+<ParamField body="payment.card" type="object">
+  Dados do cartão (apenas para `CREDIT_CARD` e `DEBIT_CARD`)
+</ParamField>
+
+<ParamField body="payment.card.lastDigits" type="string">
+  Últimos 4 dígitos do cartão
+</ParamField>
+
+<ParamField body="payment.card.brand" type="string">
+  Bandeira do cartão. Ex: `VISA`, `MASTERCARD`, `ELO`
+</ParamField>
+
+<ParamField body="payment.boleto" type="object">
+  Dados do boleto (apenas para `BOLETO`)
+</ParamField>
+
+<ParamField body="payment.boleto.code" type="string">
+  Linha digitável / código de barras do boleto
+</ParamField>
+
+<ParamField body="payment.boleto.url" type="string">
+  Link para visualizar o boleto. Pode vir `null` dependendo da adquirente
+</ParamField>
+
+<ParamField body="payment.boleto.pdf" type="string">
+  Link do PDF do boleto. Pode vir `null` dependendo da adquirente
+</ParamField>
+
+<ParamField body="payment.boleto.expiresAt" type="string">
+  Data de vencimento do boleto (ISO 8601)
+</ParamField>
+
 <ParamField body="shipping" type="string">
   Informações de entrega em formato JSON string (apenas para produtos físicos). `null` para produtos digitais.
 </ParamField>
 
 <ParamField body="createdAt" type="string" required>
   Data de criação da venda (ISO 8601)
+</ParamField>
+
+<ParamField body="subscription" type="object">
+  Dados da assinatura quando a venda é recorrente. `null` nas vendas avulsas
 </ParamField>
 
 ## Status das Transações
